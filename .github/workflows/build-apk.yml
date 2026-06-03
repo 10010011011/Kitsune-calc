@@ -19,30 +19,31 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Set up Node.js Environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Install Bubblewrap CLI
-        run: npm install -g @bubblewrap/cli
-
-      - name: Build Android App Project
+      - name: Clone WebView Native Container
         run: |
-          bubblewrap init --manifest="https://10010011011.github.io/Kitsune-calc/manifest.json" --meta=options.json || true
-          echo '{"domain":"10010011011.github.io","urlPath":"/Kitsune-calc/","name":"Kitsune Handheld Suite","shortName":"Kitsune","themeColor":"#22d3ee","backgroundColor":"#0a0b0d","startUrl":"https://10010011011.github.io/Kitsune-calc/index.html","icon":"https://10010011011.github.io/Kitsune-calc/imresizer-file_00000000e1bc7207bd9f7023a8dee8f0%20(1).png","signingKey":{"path":"./kitsune.keystore","alias":"kitsune"},"apkVersionCode":1,"apkVersionName":"1.0.0","display":"fullscreen","orientation":"portrait"}' > twa-manifest.json
+          git clone https://github.com/S64/android-webview-app-template.git native-app
+          cd native-app
+          
+          # Inject your specific website URL directly into the application layout configuration
+          sed -i 's|https://example.com|https://10010011011.github.io/Kitsune-calc/|g' app/src/main/res/values/strings.xml
+          
+          # Set up app name matching your suite
+          sed -i 's/Web App Template/Kitsune Handheld Suite/g' app/src/main/res/values/strings.xml
+          
+          # Force true fullscreen mode matching your manifest intent
+          sed -i '/<application/a \        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"' app/src/main/AndroidManifest.xml
 
-      - name: Generate Secure App Signing Key
+      - name: Compile Production APK File
         run: |
-          keytool -genkey -v -keystore kitsune.keystore -alias kitsune -keyalg RSA -keysize 2048 -validity 10000 -storepass kitsunepass -keypass kitsunepass -dname "CN=Kitsune, OU=Dev, O=Math, L=Bhagalpur, S=Bihar, C=IN"
-
-      - name: Compile Signed Android APK Package
-        run: |
-          bubblewrap build --signingKeyPath=./kitsune.keystore --signingKeyPassword=kitsunepass --keyPairPassword=kitsunepass || true
+          cd native-app
+          chmod +x gradlew
+          ./gradlew assembleRelease
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Kitsune-Shareable-APK
-          path: ./**/*.apk
-          
+          path: native-app/app/build/outputs/apk/release/*.apk
