@@ -18,10 +18,7 @@ jobs:
 
       - name: Generate Signing Keystore and App Blueprint
         run: |
-          # Automatically generate a valid standalone Android signature key asset
           keytool -genkey -v -keystore kitsune.keystore -alias kitsune -keyalg RSA -keysize 2048 -validity 10000 -storepass kitsunepass -keypass kitsunepass -dname "CN=Kitsune, OU=Dev, O=Math, L=Bhagalpur, S=Bihar, C=IN"
-          
-          # Write out a complete production-ready blueprint configuration mapping to your files
           echo '{
             "domain": "10010011011.github.io",
             "urlPath": "/Kitsune-calc/",
@@ -58,7 +55,6 @@ jobs:
 
       - name: Compile Inside Official Google Container
         run: |
-          # Mount the directory directly into Google's pre-configured image environment to run the build smoothly
           docker run --rm \
             -v "$PWD":/app \
             -w /app \
@@ -71,4 +67,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Kitsune-Shareable-APK
-          path: ./**/*.apk
+          path: |
+            *.apk
+            **/*.apk
+            output/*.apk
+            
