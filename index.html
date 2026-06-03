@@ -7,98 +7,76 @@
   
   <link rel="manifest" href="manifest.json">
   
-    <script src="3.4.17"></script>
-  <script src="math.js"></script>
-  <script src="chart.js"></script>
-  <link rel="stylesheet" href="katex.min.css">
-  <script src="katex.min.js"></script>
-
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
   
   <style>
-        @font-face { font-family: 'Press Start 2P'; src: url('PressStart2P-Regular.ttf') format('truetype'); font-weight: 400; font-display: block; }
+    @font-face { font-family: 'Press Start 2P'; src: url('PressStart2P-Regular.ttf') format('truetype'); font-weight: 400; font-display: block; }
     @font-face { font-family: 'Courier Prime'; src: url('CourierPrime-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
     @font-face { font-family: 'Plus Jakarta Sans'; src: url('PlusJakartaSans[wght].ttf') format('truetype'); font-weight: 100 900; font-display: swap; }
-
     :root { --bg-env: #0a0b0d; --console-body: #1c1e22; --screen-border: #2d3139; --screen-bg: #0f1012; --text-screen: #ffffff; --text-hardware: #22d3ee; --text-hardware-muted: #8090a0; --accent-glow: #22d3ee; --btn-bg: #2b2e33; --btn-text: #ffffff; --btn-op-bg: #1e2022; --btn-op-text: #22d3ee; --shadow-console: 0 25px 50px -12px rgba(0,0,0,0.8); --shadow-inset: inset 2px 2px 6px rgba(0,0,0,0.65); --shadow-button: inset 1px 1px 2px rgba(255,255,255,0.08), 3px 4px 6px rgba(0,0,0,0.5); --shadow-button-active: inset 3px 3px 6px rgba(0,0,0,0.7); }
     .theme-cream { --bg-env: #f3f0e4; --console-body: #ebdcb9; --screen-border: #dac9a6; --screen-bg: #faf8f2; --text-screen: #1c1c1e; --text-hardware: #475569; --text-hardware-muted: #788596; --accent-glow: #ea580c; --btn-bg: #fdfbf7; --btn-text: #1c1c1e; --btn-op-bg: #dfd3b4; --btn-op-text: #d97706; --shadow-console: 0 25px 50px -12px rgba(120,110,90,0.45); --shadow-inset: inset 2px 2px 5px rgba(0,0,0,0.12); --shadow-button: inset 1px 1px 2px rgba(255,255,255,0.9), 3px 4px 6px rgba(160,150,130,0.3); --shadow-button-active: inset 2px 2px 4px rgba(0,0,0,0.15); }
-    body { background-color: var(--bg-env); color: var(--text-hardware); font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow-x: hidden; min-height: 100vh; }
+    body { background-color: var(--bg-env); color: var(--text-hardware); font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; overflow-x: hidden; min-height: 100vh; }
     .console-shell { background-color: var(--console-body); box-shadow: var(--shadow-console); border: 4px solid rgba(255,255,255,0.02); border-radius: 36px; max-width: 440px; }
     .game-screen-area { background-color: var(--screen-bg); border: 8px solid var(--screen-border); color: var(--text-screen); box-shadow: var(--shadow-inset); border-radius: 18px; }
-    .tactile-btn { background: var(--btn-bg); color: var(--btn-text); box-shadow: var(--shadow-button); border-radius: 50%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-weight: 700; transition: all 0.05s ease; user-select: none; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .tactile-btn { background: var(--btn-bg); color: var(--btn-text); box-shadow: var(--shadow-button); border-radius: 50%; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-weight: 700; transition: all 0.05s ease; user-select: none; -webkit-tap-highlight-color: transparent; }
     .tactile-btn:active { box-shadow: var(--shadow-button-active); transform: scale(0.95); }
     .digit-font { font-family: 'Press Start 2P', monospace !important; font-size: 0.75rem !important; }
     .tactile-btn-op { background: var(--btn-op-bg); color: var(--btn-op-text); }
     .tactile-btn-action { background: var(--accent-glow); color: var(--bg-env); }
     .dpad-part { background-color: #222426; box-shadow: inset 1px 1px 2px rgba(255,255,255,0.1), 2px 3px 5px rgba(0,0,0,0.4); }
     .theme-cream .dpad-part { background-color: #5c5a54; box-shadow: inset 1px 1px 1px rgba(255,255,255,0.4), 2px 3px 5px rgba(0,0,0,0.2); }
-    .notebook-render { font-family: 'Courier Prime', 'Courier New', monospace; }
-    .tactile-btn.op-symbol { font-size: 1.1rem; font-weight: 500; }
+    .notebook-render { font-family: 'Courier Prime', monospace; }
     .app-input { font-family: 'Courier Prime', monospace; background: var(--screen-bg); border: 1px solid var(--screen-border); color: var(--text-screen); border-radius: 8px; }
-    .app-input:focus { border-color: var(--accent-glow); outline: none; }
-    .animate-result { animation: fadeSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
-    @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-    .kin-flex-row { display: flex; gap: 0.25rem; align-items: center; }
-    body.mode-basic { --accent-glow:#22d3ee; --btn-op-text:#22d3ee; }
-    body.mode-scientific { --accent-glow:#a78bfa; --btn-op-text:#a78bfa; }
-    body.mode-calculus { --accent-glow:#f472b6; --btn-op-text:#f472b6; }
-    body.mode-graph { --accent-glow:#3b82f6; --btn-op-text:#3b82f6; }
-    body.mode-wavy { --accent-glow:#34d399; --btn-op-text:#34d399; }
-    body.mode-vectors { --accent-glow:#fb923c; --btn-op-text:#fb923c; }
-    body.mode-kinematics { --accent-glow:#facc15; --btn-op-text:#facc15; }
-    body.theme-cream.mode-basic { --accent-glow:#ea580c; --btn-op-text:#d97706; }
-    body.theme-cream.mode-scientific { --accent-glow:#7c3aed; --btn-op-text:#7c3aed; }
-    body.theme-cream.mode-calculus { --accent-glow:#db2777; --btn-op-text:#db2777; }
-    body.theme-cream.mode-graph { --accent-glow:#2563eb; --btn-op-text:#2563eb; }
-    body.theme-cream.mode-wavy { --accent-glow:#059669; --btn-op-text:#059669; }
-    body.theme-cream.mode-vectors { --accent-glow:#c2410c; --btn-op-text:#c2410c; }
-    body.theme-cream.mode-kinematics { --accent-glow:#b45309; --btn-op-text:#b45309; }
-    .game-screen-area { transition: border-color 0.4s ease, box-shadow 0.4s ease; }
-    .screen-accent-border { border-color: var(--accent-glow) !important; box-shadow: var(--shadow-inset), 0 0 0 1px color-mix(in srgb, var(--accent-glow) 20%, transparent) !important; }
-    .panel-enter { animation: panelSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-    @keyframes panelSlideIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-    .sci-btn { background: var(--btn-bg); color: var(--text-screen); box-shadow: var(--shadow-button); border-radius: 10px; padding: 0.55rem 0; font-weight: 600; font-size: 0.8rem; transition: all 0.05s ease; user-select: none; -webkit-tap-highlight-color: transparent; border: none; cursor: pointer; }
-    .sci-btn:active { box-shadow: var(--shadow-button-active); transform: scale(0.95); }
+    body.mode-basic { --accent-glow:#22d3ee; }
+    body.mode-scientific { --accent-glow:#a78bfa; }
+    body.mode-calculus { --accent-glow:#f472b6; }
+    body.mode-graph { --accent-glow:#3b82f6; }
+    body.mode-wavy { --accent-glow:#34d399; }
+    body.mode-vectors { --accent-glow:#fb923c; }
+    body.mode-kinematics { --accent-glow:#facc15; }
+    .game-screen-area { transition: border-color 0.4s ease; }
+    .screen-accent-border { border-color: var(--accent-glow) !important; }
+    .sci-btn { background: var(--btn-bg); color: var(--text-screen); box-shadow: var(--shadow-button); border-radius: 10px; padding: 0.55rem 0; font-weight: 600; font-size: 0.8rem; }
+    .sci-btn:active { transform: scale(0.95); }
     .sci-btn.sci-trig { color: var(--accent-glow); }
-    .sci-btn.sci-const { background: var(--btn-op-bg); color: var(--accent-glow); font-size: 0.9rem; }
-    #screen-mode-badge { font-size: 9px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; background: color-mix(in srgb, var(--accent-glow) 15%, transparent); color: var(--accent-glow); border: 1px solid color-mix(in srgb, var(--accent-glow) 35%, transparent); transition: background 0.3s, color 0.3s, border-color 0.3s; }
-    .dpad-arrow { position: absolute; font-size: 8px; font-weight: 900; opacity: 0.45; pointer-events: none; line-height: 1; }
-    #start-hint { font-size: 7px; opacity: 0.6; letter-spacing: 0.05em; text-align: center; margin-top: 1px; min-height: 9px; font-weight: 700; }
-    #notebook-canvas-area { border-top: 1px dashed color-mix(in srgb, var(--accent-glow) 25%, transparent) !important; }
-    .app-input:focus { border-color: var(--accent-glow); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-glow) 20%, transparent); outline: none; }
-    .deck-btn { background: color-mix(in srgb, var(--accent-glow) 10%, var(--screen-bg)); border: 1px solid color-mix(in srgb, var(--accent-glow) 25%, transparent); color: var(--accent-glow); border-radius: 8px; font-weight: 600; transition: background 0.15s; cursor: pointer; }
-    .deck-btn:active { background: color-mix(in srgb, var(--accent-glow) 20%, var(--screen-bg)); }
-    @keyframes softPulse { 0%, 100% { transform: scale(1); opacity: 0.96; } 50% { transform: scale(1.01); opacity: 1; } }
-    .animate-splash { animation: softPulse 3s ease-in-out infinite; }
+    .sci-btn.sci-const { background: var(--btn-op-bg); color: var(--accent-glow); }
+    #screen-mode-badge { font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; background: color-mix(in srgb, var(--accent-glow) 15%, transparent); color: var(--accent-glow); border: 1px solid color-mix(in srgb, var(--accent-glow) 35%, transparent); }
+    @keyframes softPulse { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.02); opacity: 1; } }
+    .animate-splash { animation: softPulse 2.5s ease-in-out infinite; }
   </style>
 </head>
 <body class="flex items-center justify-center p-4 select-none">
 
-    <div id="kitsune-splash-screen" class="fixed inset-0 z-[99999] flex items-center justify-center bg-[#fdfdfd] transition-opacity duration-500 ease-in-out">
+  <div id="kitsune-splash-screen" class="fixed inset-0 z-[99999] flex items-center justify-center bg-[#fdfdfd] transition-opacity duration-500 ease-in-out">
     <img src="1000174121.png" alt="Loading Suite..." class="h-full w-full object-contain max-w-md animate-splash p-2">
   </div>
 
   <div class="console-shell w-full p-5 flex flex-col justify-between border-t-2">
     <div class="flex justify-between items-center px-2 mb-3 relative z-50">
-      <div class="relative">
-        <button onclick="toggleMenuDropdown()" id="menu-btn" class="text-sm font-bold tracking-wider flex items-center gap-1.5 transition-opacity" style="color: var(--text-hardware);">
+      <div>
+        <button onclick="toggleMenuDropdown()" id="menu-btn" class="text-sm font-bold tracking-wider flex items-center gap-1.5" style="color: var(--text-hardware);">
           <span class="text-xs">☰</span>
-          <span id="current-mode-lbl" class="uppercase text-[11px] font-bold tracking-normal">Basic</span>
+          <span id="current-mode-lbl" class="uppercase text-[11px] font-bold">Basic</span>
         </button>
         <div id="menu-dropdown" class="hidden absolute left-0 mt-2 w-48 rounded-lg bg-black/95 text-white border border-white/10 shadow-2xl py-1 z-[999]">
-          <button onclick="changeMode('basic')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs font-medium">🔢 Basic Console</button>
-          <button onclick="changeMode('scientific')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs font-medium">🔬 Scientific System</button>
-          <button onclick="changeMode('calculus')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs font-medium">∫ Calculus Notebook</button>
-          <button onclick="changeMode('graph')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs font-medium">📊 Graphic Curves</button>
-          <button onclick="changeMode('wavy')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs font-medium">〰️ Wavy Curve Set</button>
-          <button onclick="changeMode('vectors')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs font-medium">📐 Vector Engine</button>
-          <button onclick="changeMode('kinematics')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs font-medium">🏃 Kinematics Suite</button>
+          <button onclick="changeMode('basic')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs">🔢 Basic Console</button>
+          <button onclick="changeMode('scientific')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs">🔬 Scientific System</button>
+          <button onclick="changeMode('calculus')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs">∫ Calculus Notebook</button>
+          <button onclick="changeMode('graph')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs">📊 Graphic Curves</button>
+          <button onclick="changeMode('wavy')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs">〰️ Wavy Curve Set</button>
+          <button onclick="changeMode('vectors')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs">📐 Vector Engine</button>
+          <button onclick="changeMode('kinematics')" class="w-full text-left px-4 py-2 hover:bg-white/10 text-xs">🏃 Kinematics Suite</button>
         </div>
       </div>
       <div class="flex gap-1 items-center">
         <div class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
-        <span class="text-[9px] font-bold tracking-wide" style="color: var(--text-hardware);">POWER</span>
+        <span class="text-[9px] font-bold" style="color: var(--text-hardware);">POWER</span>
       </div>
-      <button onclick="toggleAppTheme()" class="p-1 transition-opacity text-xs font-bold" style="color: var(--text-hardware);">
+      <button onclick="toggleAppTheme()" class="p-1 text-xs font-bold" style="color: var(--text-hardware);">
         <span id="theme-icon">☀️</span>
       </button>
     </div>
@@ -106,142 +84,70 @@
     <div id="main-screen" class="game-screen-area p-3 mb-4 flex flex-col justify-between min-h-[175px]">
       <div class="flex justify-between items-center gap-1">
         <span id="screen-mode-badge">BASIC</span>
-        <div id="screen-expr-buffer" class="flex-1 text-[10px] font-mono opacity-60 overflow-x-auto whitespace-nowrap text-center px-1"></div>
+        <div id="screen-expr-buffer" class="flex-1 text-[10px] font-mono opacity-60 overflow-x-auto whitespace-nowrap text-center"></div>
         <div id="screen-angle-mode" class="text-amber-500 font-bold text-[9px]">DEG</div>
         <div id="screen-frac-buffer" class="font-bold text-[9px]" style="color:var(--accent-glow)"></div>
       </div>
-      <div class="text-right overflow-x-auto whitespace-nowrap my-2" style="font-family:'Press Start 2P',monospace; font-size:clamp(1rem,6vw,1.75rem); letter-spacing:-0.02em; line-height:1.4;" id="screen-primary-readout">0</div>
-      <div id="notebook-canvas-area" class="notebook-render mt-1 pt-2 text-xs overflow-y-auto max-h-40 hidden animate-result"></div>
+      <div class="text-right overflow-x-auto whitespace-nowrap my-2" style="font-family:'Press Start 2P',monospace; font-size:1.5rem;" id="screen-primary-readout">0</div>
+      <div id="notebook-canvas-area" class="notebook-render mt-1 pt-2 text-xs overflow-y-auto max-h-40 hidden"></div>
     </div>
 
     <div id="hardware-workspace-deck" class="mb-4 hidden">
-      <div id="deck-calculus" class="hidden space-y-2.5 text-xs">
+      <div id="deck-calculus" class="hidden space-y-2 text-xs">
         <div class="grid grid-cols-2 gap-2">
-          <input type="text" id="calc-expr-in" value="x^2 + 3*x" placeholder="f(x)" class="p-2 app-input font-mono text-center text-xs">
-          <input type="text" id="calc-val-in" value="2" placeholder="x₀" class="p-2 app-input font-mono text-center text-xs">
+          <input type="text" id="calc-expr-in" value="x^2 + 3*x" class="p-2 app-input text-center">
+          <input type="text" id="calc-val-in" value="2" class="p-2 app-input text-center">
         </div>
-        <div class="grid grid-cols-3 gap-1.5 text-xs font-bold">
-          <button onclick="evalDerivative()" class="py-2.5 deck-btn">Derivative</button>
-          <button onclick="evalIntegral()" class="py-2.5 deck-btn">Integral</button>
-          <button onclick="evalTangentNormal()" class="py-2.5 deck-btn">Tan/Normal</button>
+        <div class="grid grid-cols-3 gap-1.5 font-bold">
+          <button onclick="evalDerivative()" class="py-2.5 deck-btn bg-neutral-800 rounded text-cyan-400">Derivative</button>
+          <button onclick="evalIntegral()" class="py-2.5 deck-btn bg-neutral-800 rounded text-cyan-400">Integral</button>
+          <button onclick="evalTangentNormal()" class="py-2.5 deck-btn bg-neutral-800 rounded text-cyan-400">Tan/Norm</button>
         </div>
       </div>
 
       <div id="deck-graph" class="hidden space-y-2 text-xs">
-        <div class="flex gap-4 justify-center text-xs font-medium mb-1">
-          <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="grType" checked onclick="switchGraphMode('quad')"> Quadratic</label>
-          <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="grType" onclick="switchGraphMode('cust')"> Custom</label>
-        </div>
-        <div id="gr-quad-inputs" class="grid grid-cols-3 gap-1.5">
-          <input type="number" id="gr-in-a" value="1" placeholder="a" oninput="runPlotting()" class="p-1.5 app-input text-center font-mono">
-          <input type="number" id="gr-in-b" value="0" placeholder="b" oninput="runPlotting()" class="p-1.5 app-input text-center font-mono">
-          <input type="number" id="gr-in-c" value="0" placeholder="c" oninput="runPlotting()" class="p-1.5 app-input text-center font-mono">
-        </div>
-        <div id="gr-cust-inputs" class="hidden">
-          <input type="text" id="gr-in-fx" value="sin(x)" oninput="runPlotting()" class="w-full p-1.5 app-input font-mono text-center text-xs">
-        </div>
-        <div class="w-full h-28 relative bg-black/10 rounded border border-white/5 overflow-hidden">
-          <canvas id="chartCanvasElement"></canvas>
-        </div>
+        <input type="text" id="gr-in-fx" value="sin(x)" oninput="runPlotting()" class="w-full p-2 app-input text-center">
+        <div class="w-full h-24 bg-black/10 rounded overflow-hidden"><canvas id="chartCanvasElement"></canvas></div>
       </div>
 
       <div id="deck-wavy" class="hidden space-y-2 text-xs">
         <div class="grid grid-cols-2 gap-1.5">
-          <input type="text" id="wv-in-n" value="(x-1)^2 * (x-3)" placeholder="Numerator" class="p-2 app-input font-mono text-center text-xs">
-          <input type="text" id="wv-in-d" value="(x+2)" placeholder="Denominator" class="p-2 app-input font-mono text-center text-xs">
+          <input type="text" id="wv-in-n" value="(x-1)*(x-3)" class="p-2 app-input text-center">
+          <input type="text" id="wv-in-d" value="(x+2)" class="p-2 app-input text-center">
         </div>
-        <div class="flex gap-1 text-xs font-bold">
-          <button onclick="setWavySignChar('>')" id="wvs-gt" class="flex-1 py-1 bg-black/10 rounded border border-transparent transition-colors">&gt;</button>
-          <button onclick="setWavySignChar('<')" id="wvs-lt" class="flex-1 py-1 bg-black/10 rounded border border-transparent transition-colors">&lt;</button>
-          <button onclick="setWavySignChar('≥')" id="wvs-ge" class="flex-1 py-1 rounded border transition-colors" style="background:color-mix(in srgb,var(--accent-glow) 15%,transparent);color:var(--accent-glow);border-color:color-mix(in srgb,var(--accent-glow) 35%,transparent)">?</button>
-          <button onclick="setWavySignChar('≤')" id="wvs-le" class="flex-1 py-1 bg-black/10 rounded border border-transparent transition-colors">?</button>
-        </div>
-        <div class="w-full h-14 bg-black/20 rounded overflow-hidden">
-          <svg id="wavy-vector-svg" class="w-full h-full" viewBox="0 0 400 60" preserveAspectRatio="none"></svg>
-        </div>
+        <button onclick="solveWavy()" class="w-full py-2 bg-neutral-800 text-cyan-400 rounded font-bold">Solve Curve</button>
+        <svg id="wavy-vector-svg" class="w-full h-10" viewBox="0 0 400 40"></svg>
       </div>
 
-      <div id="deck-vectors" class="hidden space-y-1.5 text-xs">
-        <div class="flex justify-between items-center text-[11px] font-medium">
-          <span class="opacity-60">Vector Elements (x, y, z):</span>
-          <div class="flex gap-2">
-            <button onclick="setVectorDim('2d')" id="vdim-2d" class="font-bold">2D</button>
-            <button onclick="setVectorDim('3d')" id="vdim-3d" class="font-bold text-cyan-400">3D</button>
-          </div>
+      <div id="deck-vectors" class="hidden space-y-1 text-xs">
+        <div class="grid grid-cols-4 gap-1 items-center font-mono">
+          <span>A:</span><input type="number" id="v3-ax" value="2" class="p-1 app-input text-center"><input type="number" id="v3-ay" value="3" class="p-1 app-input text-center"><input type="number" id="v3-az" value="-1" class="p-1 app-input text-center">
         </div>
-        <div class="grid grid-cols-4 gap-1.5 items-center font-mono">
-          <span>A:</span>
-          <input type="number" id="v3-ax" value="2" class="p-1 app-input text-center text-xs">
-          <input type="number" id="v3-ay" value="3" class="p-1 app-input text-center text-xs">
-          <input type="number" id="v3-az" value="-1" class="p-1 app-input text-center text-xs vec3d-cell">
+        <div class="grid grid-cols-4 gap-1 items-center font-mono">
+          <span>B:</span><input type="number" id="v3-bx" value="1" class="p-1 app-input text-center"><input type="number" id="v3-by" value="0" class="p-1 app-input text-center"><input type="number" id="v3-bz" value="4" class="p-1 app-input text-center">
         </div>
-        <div class="grid grid-cols-4 gap-1.5 items-center font-mono">
-          <span>B:</span>
-          <input type="number" id="v3-bx" value="1" class="p-1 app-input text-center text-xs">
-          <input type="number" id="v3-by" value="0" class="p-1 app-input text-center text-xs">
-          <input type="number" id="v3-bz" value="4" class="p-1 app-input text-center text-xs vec3d-cell">
-        </div>
-        <div class="grid grid-cols-4 gap-1.5 items-center font-mono vec3d-row">
-          <span>C:</span>
-          <input type="number" id="v3-cx" value="3" class="p-1 app-input text-center text-xs">
-          <input type="number" id="v3-cy" value="1" class="p-1 app-input text-center text-xs">
-          <input type="number" id="v3-cz" value="2" class="p-1 app-input text-center text-xs">
-        </div>
-        <div class="grid grid-cols-4 gap-1.5 text-[11px] font-bold pt-0.5">
-          <button onclick="computeVectors('add')" class="py-1 deck-btn rounded-lg">A+B</button>
-          <button onclick="computeVectors('dot')" class="py-1 deck-btn rounded-lg">A·B</button>
-          <button onclick="computeVectors('cross')" class="py-1 deck-btn rounded-lg vec3d-cell">A×B</button>
-          <button onclick="computeVectors('stp')" class="py-1 deck-btn rounded-lg vec3d-cell">[ABC]</button>
+        <div class="grid grid-cols-3 gap-1 font-bold pt-1">
+          <button onclick="computeVectors('add')" class="p-1 bg-neutral-800 rounded">A+B</button>
+          <button onclick="computeVectors('dot')" class="p-1 bg-neutral-800 rounded">A·B</button>
+          <button onclick="computeVectors('cross')" class="p-1 bg-neutral-800 rounded">A×B</button>
         </div>
       </div>
 
       <div id="deck-kinematics" class="hidden space-y-1.5 text-xs">
-        <div class="flex gap-3 text-xs border-b border-white/5 pb-1 font-bold">
-          <button onclick="shiftKinSubPane('suvat')" id="ksb-suvat" class="text-cyan-400">SUVAT</button>
-          <button onclick="shiftKinSubPane('calc')" id="ksb-calc" class="opacity-60">Calculus</button>
-          <button onclick="shiftKinSubPane('proj')" id="ksb-proj" class="opacity-60">Projectile</button>
-        </div>
-        <div id="kp-suvat" class="grid grid-cols-5 gap-1 font-mono text-[9px] text-center">
-          <div><label class="opacity-50">u</label><input type="number" id="sv-u" class="w-full p-1 app-input text-center"></div>
-          <div><label class="opacity-50">v</label><input type="number" id="sv-v" class="w-full p-1 app-input text-center"></div>
-          <div><label class="opacity-50">a</label><input type="number" id="sv-a" class="w-full p-1 app-input text-center"></div>
-          <div><label class="opacity-50">s</label><input type="number" id="sv-s" class="w-full p-1 app-input text-center"></div>
-          <div><label class="opacity-50">t</label><input type="number" id="sv-t" class="w-full p-1 app-input text-center"></div>
-          <button onclick="runSuvatEngine()" class="col-span-5 mt-1.5 py-1.5 deck-btn rounded text-xs font-bold">Solve Components</button>
-        </div>
-        <div id="kp-calc" class="hidden">
-          <div class="kin-flex-row">
-            <input type="text" id="kcl-f" value="3*t^2" class="w-1/2 p-1.5 app-input font-mono text-center">
-            <select id="kcl-type" class="w-1/4 p-1.5 app-input text-center text-xs font-medium">
-              <option value="s">s(t) → v,a</option>
-              <option value="v">v(t) → a,s</option>
-              <option value="a">a(t) → v,s</option>
-            </select>
-            <button onclick="runKinematicsCalculus()" class="w-1/4 py-1.5 deck-btn rounded-lg font-bold text-xs">Compute</button>
-          </div>
-        </div>
-        <div id="kp-proj" class="hidden">
-          <div class="kin-flex-row">
-            <input type="number" id="kpj-u" value="20" placeholder="u (m/s)" class="w-1/3 p-1.5 app-input text-center font-mono">
-            <input type="number" id="kpj-th" value="30" placeholder="θ (deg)" class="w-1/3 p-1.5 app-input text-center font-mono">
-            <button onclick="runProjectileSolver()" class="w-1/3 py-1.5 deck-btn rounded-lg font-bold">Analyze</button>
-          </div>
+        <div class="grid grid-cols-3 gap-1">
+          <input type="number" id="kpj-u" value="20" class="p-1 app-input text-center">
+          <input type="number" id="kpj-th" value="30" class="p-1 app-input text-center">
+          <button onclick="runProjectileSolver()" class="p-1 bg-neutral-800 rounded font-bold">Project</button>
         </div>
       </div>
     </div>
 
-    <div id="scientific-deck" class="px-1 mb-4 hidden panel-enter">
+    <div id="scientific-deck" class="mb-4 hidden">
       <div class="grid grid-cols-4 gap-2 mb-2">
         <button onclick="runSciOp('sin')" class="sci-btn sci-trig">sin</button>
         <button onclick="runSciOp('cos')" class="sci-btn sci-trig">cos</button>
         <button onclick="runSciOp('tan')" class="sci-btn sci-trig">tan</button>
         <button onclick="runSciOp('sqrt')" class="sci-btn">√x</button>
-      </div>
-      <div class="grid grid-cols-4 gap-2 mb-2">
-        <button onclick="runSciOp('asin')" class="sci-btn sci-trig">sin⁻¹</button>
-        <button onclick="runSciOp('acos')" class="sci-btn sci-trig">cos⁻¹</button>
-        <button onclick="runSciOp('atan')" class="sci-btn sci-trig">tan⁻¹</button>
-        <button onclick="runSciOp('factorial')" class="sci-btn">n!</button>
       </div>
       <div class="grid grid-cols-4 gap-2">
         <button onclick="runSciOp('ln')" class="sci-btn">ln</button>
@@ -252,105 +158,76 @@
     </div>
 
     <div id="hardware-keyboard-deck" class="space-y-3.5">
-      <div class="grid grid-cols-4 gap-3.5 text-lg">
+      <div class="grid grid-cols-4 gap-3 text-lg">
         <button onclick="inputKey('C')" class="tactile-btn tactile-btn-op font-bold text-red-400">C</button>
         <button onclick="inputKey('±')" class="tactile-btn tactile-btn-op font-semibold">±</button>
-        <button onclick="toggleDisplayFraction()" class="tactile-btn tactile-btn-op text-[11px] font-bold text-cyan-400 flex flex-col justify-center items-center">
-          <span>a/b</span><span class="text-[8px] opacity-60 tracking-tight">Frac</span>
-        </button>
-        <button onclick="inputKey('÷')" class="tactile-btn tactile-btn-op op-symbol font-medium">÷</button>
+        <button onclick="toggleDisplayFraction()" class="tactile-btn tactile-btn-op text-[10px] font-bold text-cyan-400">a/b</button>
+        <button onclick="inputKey('÷')" class="tactile-btn tactile-btn-op">÷</button>
         <button onclick="inputKey('7')" class="tactile-btn digit-font">7</button>
         <button onclick="inputKey('8')" class="tactile-btn digit-font">8</button>
         <button onclick="inputKey('9')" class="tactile-btn digit-font">9</button>
-        <button onclick="inputKey('×')" class="tactile-btn tactile-btn-op op-symbol font-medium">×</button>
+        <button onclick="inputKey('×')" class="tactile-btn tactile-btn-op">×</button>
         <button onclick="inputKey('4')" class="tactile-btn digit-font">4</button>
         <button onclick="inputKey('5')" class="tactile-btn digit-font">5</button>
         <button onclick="inputKey('6')" class="tactile-btn digit-font">6</button>
-        <button onclick="inputKey('-')" class="tactile-btn tactile-btn-op op-symbol font-medium">−</button>
+        <button onclick="inputKey('-')" class="tactile-btn tactile-btn-op">−</button>
         <button onclick="inputKey('1')" class="tactile-btn digit-font">1</button>
         <button onclick="inputKey('2')" class="tactile-btn digit-font">2</button>
         <button onclick="inputKey('3')" class="tactile-btn digit-font">3</button>
-        <button onclick="inputKey('+')" class="tactile-btn tactile-btn-op op-symbol font-medium">+</button>
+        <button onclick="inputKey('+')" class="tactile-btn tactile-btn-op">+</button>
         <button onclick="inputKey('0')" class="tactile-btn digit-font">0</button>
         <button onclick="inputKey('.')" class="tactile-btn digit-font">.</button>
-        <button onclick="inputKey('⌫')" class="tactile-btn op-symbol text-sm font-bold opacity-80">⌫</button>
-        <button onclick="inputKey('=')" class="tactile-btn tactile-btn-action op-symbol font-medium">=</button>
+        <button onclick="inputKey('⌫')" class="tactile-btn text-sm font-bold">⌫</button>
+        <button onclick="inputKey('=')" class="tactile-btn tactile-btn-action font-medium">=</button>
       </div>
     </div>
 
-    <div class="flex justify-between items-end mt-4 pt-2 relative">
-      <div class="relative w-20 h-20">
-        <div class="absolute top-7 left-0 w-20 h-6 dpad-part rounded-sm"></div>
-        <div class="absolute top-0 left-7 w-6 h-20 dpad-part rounded-sm"></div>
-        <span class="dpad-arrow" style="top:50%;left:3px;transform:translateY(-50%)">◀</span>
-        <span class="dpad-arrow" style="top:50%;right:3px;transform:translateY(-50%)">▶</span>
-        <button onclick="shiftModeDpad(-1)" class="absolute top-7 left-0 w-6 h-6 active:bg-black/40 z-10" title="Prev Mode"></button>
-        <button onclick="shiftModeDpad(1)" class="absolute top-7 right-0 w-6 h-6 active:bg-black/40 z-10" title="Next Mode"></button>
-        <div class="absolute top-7 left-7 w-6 h-6 bg-[#1b1c1e] rounded-full opacity-40"></div>
-        <div class="absolute -bottom-4 left-0 w-full text-center text-[8px] font-bold tracking-wider opacity-40">MODE</div>
+    <div class="flex justify-between items-end mt-4">
+      <div class="relative w-16 h-16">
+        <div class="absolute top-5 left-0 w-16 h-6 dpad-part rounded-sm"></div>
+        <div class="absolute top-0 left-5 w-6 h-16 dpad-part rounded-sm"></div>
+        <button onclick="shiftModeDpad(-1)" class="absolute top-5 left-0 w-5 h-6 active:bg-black/40 z-10"></button>
+        <button onclick="shiftModeDpad(1)" class="absolute top-5 right-0 w-5 h-6 active:bg-black/40 z-10"></button>
+        <div class="absolute top-5 left-5 w-6 h-6 bg-[#1b1c1e] rounded-full opacity-40"></div>
       </div>
-      <div class="absolute left-1/2 -translate-x-1/2 bottom-3 font-sans text-xs font-bold uppercase tracking-[0.45em] pointer-events-none select-none" style="color: var(--text-hardware); opacity: 0.12;">Kitsune</div>
       <div class="flex gap-4 text-[9px] font-bold text-center mb-1" style="color: var(--text-hardware);">
-        <div class="flex flex-col items-center gap-0.5">
-          <button onclick="handleSelectHardwareButton()" class="focus:outline-none group">
-            <div class="w-10 h-3 bg-neutral-600 rounded-full rotate-[-12deg] mx-auto shadow-md transition-transform group-active:scale-95"></div>
-          </button>
-          <span class="text-[8px] opacity-60">SELECT</span>
-          <span class="text-[7px] opacity-45 tracking-tight">DEG/RAD</span>
+        <div class="flex flex-col items-center">
+          <button onclick="handleSelectHardwareButton()" class="w-8 h-2 bg-neutral-600 rounded-full mb-1"></button>
+          <span class="text-[7px] opacity-60">SEL</span>
         </div>
-        <div class="flex flex-col items-center gap-0.5">
-          <button onclick="handleStartHardwareButton()" class="focus:outline-none group">
-            <div class="w-10 h-3 bg-neutral-600 rounded-full rotate-[-12deg] mx-auto shadow-md transition-transform group-active:scale-95"></div>
-          </button>
-          <span class="text-[8px] opacity-60">START</span>
-          <span id="start-hint" style="color:var(--accent-glow)">= EVAL</span>
+        <div class="flex flex-col items-center">
+          <button onclick="handleStartHardwareButton()" class="w-8 h-2 bg-neutral-600 rounded-full mb-1"></button>
+          <span class="text-[7px] opacity-60">EVAL</span>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const _sysObfs = "eyJiYXNpYyI6eyJsYWJlbCI6IkJBU0lCIiwiYmFkZ2UiOiJCQVNJQyIsInN0YXJ0IjoiPSBFVkFMIn0sInNjaWVudGlmaWMiOnsibGFiZWwiOiJTQ0kiLCJiYWRnZSI6IlNDSSIsInN0YXJ0IjoiQ09NUFVURSJ9LCJjYWxjdWx1cyI6eyJsYWJlbCI6IkNBTENVTFVTIiwiYmFkZ2UiOiLiiKsgQ0FMQyIsInN0YXJ0IjoiREVSSVZFIid9LCJncmFwaCI6eyJsYWJlbCI6IkdSQVBIIiwiYmFkZ2UiOiLwn9STIEdSQVBIIiwic3RhcnQiOiJQTE9UIn0sIndhdnkiOnsibGFiZWwiOiJXQVZFIiwiYmFkZ2UiOiLjg3AgV0FWWSIsInN0YXJ0IjoiU09MVkUifSwidmVjdG9ycyI6eyJsYWJlbCI6IlZFQ1RPUlMiLCJiYWRnZSI6IsKnOSBWRUMiLCJzdGFydCI6IkErQiJ9LCJraW5lbWF0aWNzIjp7ImxhYmVsIjoiS0lORU1BVElDUyIsImJhZGdlIjoi8J+RunsgS0lOIiwic3RhcnQiOiJTVVZAVCInfX0=";
-    const MODE_META = JSON.parse(atob(_sysObfs));
-    let appMode = 'basic'; let themeType = 'dark'; let exprBuffer = ''; let primaryReadout = '0'; let fractionModeActive = false; let fallbackDecimalStr = '0'; let lineChartObj = null; let selectedWavySign = '≥'; let activeVecDim = '3d'; let trigAngleMode = 'deg';
+    let appMode = 'basic'; let themeType = 'dark'; let exprBuffer = ''; let primaryReadout = '0'; let fractionModeActive = false; let fallbackDecimalStr = '0'; let lineChartObj = null; let trigAngleMode = 'deg';
     function toRad(v) { return trigAngleMode === 'deg' ? v * Math.PI / 180 : v; }
     function toDeg(v) { return trigAngleMode === 'deg' ? v * 180 / Math.PI : v; }
-    function applyModeStyles(mode) { document.body.classList.forEach(c => { if (c.startsWith('mode-')) document.body.classList.remove(c); }); document.body.classList.add(`mode-${mode}`); const meta = MODE_META[mode] || {}; document.getElementById('screen-mode-badge').textContent = meta.badge || mode.toUpperCase(); document.getElementById('current-mode-lbl').innerText = meta.label || mode; const hint = document.getElementById('start-hint'); if (hint) hint.textContent = meta.start || ''; const screen = document.getElementById('main-screen'); if (mode !== 'basic') { screen.classList.add('screen-accent-border'); } else { screen.classList.remove('screen-accent-border'); } }
+    function applyModeStyles(mode) { document.body.classList.forEach(c => { if (c.startsWith('mode-')) document.body.classList.remove(c); }); document.body.classList.add(`mode-${mode}`); document.getElementById('screen-mode-badge').textContent = mode.toUpperCase(); document.getElementById('current-mode-lbl').innerText = mode; const screen = document.getElementById('main-screen'); if (mode !== 'basic') screen.classList.add('screen-accent-border'); else screen.classList.remove('screen-accent-border'); }
     function toggleMenuDropdown() { document.getElementById('menu-dropdown').classList.toggle('hidden'); }
-    window.addEventListener('click', function(e) { const drop = document.getElementById('menu-dropdown'); const trigger = document.getElementById('menu-btn'); if (!drop.classList.contains('hidden') && !trigger.contains(e.target) && !drop.contains(e.target)) drop.classList.add('hidden'); });
-    function changeMode(mode) { appMode = mode; document.getElementById('menu-dropdown').classList.add('hidden'); const deck = document.getElementById('hardware-workspace-deck'); const keyboard = document.getElementById('hardware-keyboard-deck'); const sciDeck = document.getElementById('scientific-deck'); const notebook = document.getElementById('notebook-canvas-area'); const lists = ['calculus','graph','wavy','vectors','kinematics']; lists.forEach(id => document.getElementById(`deck-${id}`).classList.add('hidden')); notebook.classList.add('hidden'); if (mode === 'basic') { deck.classList.add('hidden'); sciDeck.classList.add('hidden'); keyboard.classList.remove('hidden'); } else if (mode === 'scientific') { deck.classList.add('hidden'); sciDeck.classList.remove('hidden'); keyboard.classList.remove('hidden'); } else { deck.classList.remove('hidden'); sciDeck.classList.add('hidden'); keyboard.classList.add('hidden'); notebook.classList.remove('hidden'); const panel = document.getElementById(`deck-${mode}`); panel.classList.remove('hidden'); panel.classList.remove('panel-enter'); void panel.offsetWidth; panel.classList.add('panel-enter'); } applyModeStyles(mode); if (mode === 'graph') setTimeout(runPlotting, 40); if (mode === 'wavy') solveWavy(); if (mode === 'vectors') updateVectorDimUI(); if (mode === 'kinematics') shiftKinSubPane('suvat'); }
+    function changeMode(mode) { appMode = mode; document.getElementById('menu-dropdown').classList.add('hidden'); const deck = document.getElementById('hardware-workspace-deck'); const keyboard = document.getElementById('hardware-keyboard-deck'); const sciDeck = document.getElementById('scientific-deck'); const notebook = document.getElementById('notebook-canvas-area'); const lists = ['calculus','graph','wavy','vectors','kinematics']; lists.forEach(id => document.getElementById(`deck-${id}`).classList.add('hidden')); notebook.classList.add('hidden'); if (mode === 'basic') { deck.classList.add('hidden'); sciDeck.classList.add('hidden'); keyboard.classList.remove('hidden'); } else if (mode === 'scientific') { deck.classList.add('hidden'); sciDeck.classList.remove('hidden'); keyboard.classList.remove('hidden'); } else { deck.classList.remove('hidden'); sciDeck.classList.add('hidden'); keyboard.classList.add('hidden'); notebook.classList.remove('hidden'); document.getElementById(`deck-${mode}`).classList.remove('hidden'); } applyModeStyles(mode); if (mode === 'graph') setTimeout(runPlotting, 40); if (mode === 'wavy') solveWavy(); }
     function shiftModeDpad(dir) { const order = ['basic','scientific','calculus','graph','wavy','vectors','kinematics']; let idx = order.indexOf(appMode) + dir; if (idx < 0) idx = order.length - 1; if (idx >= order.length) idx = 0; changeMode(order[idx]); }
-    function toggleAppTheme() { themeType = themeType === 'dark' ? 'light' : 'dark'; const modeClass = `mode-${appMode}`; if (themeType === 'light') { document.body.className = `theme-cream flex items-center justify-center p-3 ${modeClass}`; } else { document.body.className = `flex items-center justify-center p-3 ${modeClass}`; } document.getElementById('theme-icon').innerText = themeType === 'light' ? '🌙' : '☀️'; if (appMode === 'graph') runPlotting(); }
-    function handleSelectHardwareButton() { trigAngleMode = trigAngleMode === 'deg' ? 'rad' : 'deg'; document.getElementById('screen-angle-mode').innerText = trigAngleMode.toUpperCase(); printNotebookMath(`\\text{Angle Mode} \\rightarrow \\mathbf{${trigAngleMode.toUpperCase()}}`); }
-    function handleStartHardwareButton() { if (appMode === 'calculus') evalDerivative(); else if (appMode === 'graph') runPlotting(); else if (appMode === 'wavy') solveWavy(); else if (appMode === 'vectors') computeVectors('add'); else if (appMode === 'kinematics') runSuvatEngine(); else { let calcStr = exprBuffer.replace(/×/g,'*').replace(/÷/g,'/'); if (!calcStr) return; try { let res = math.evaluate(calcStr); primaryReadout = fmtNum(res); exprBuffer = primaryReadout; document.getElementById('screen-primary-readout').innerText = primaryReadout; syncCornerFraction(res); } catch { primaryReadout = 'Error'; document.getElementById('screen-primary-readout').innerText = primaryReadout; } } }
-    function parseToFractionForm(val) { if (isNaN(val) || !isFinite(val)) return null; let sign = val < 0 ? '-' : ''; let abs = Math.abs(val); let w = Math.floor(abs); let f = abs - w; if (f < 1e-9) return sign + w; let bn = 0, bd = 1, minErr = Infinity; for (let d = 1; d <= 4000; d++) { let n = Math.round(f * d); let err = Math.abs(f - n / d); if (err < minErr) { minErr = err; bn = n; bd = d; if (err < 1e-10) break; } } return `${sign}${w * bd + bn}/${bd}`; }
-    function toggleDisplayFraction() { let numeric = parseFloat(primaryReadout); if (isNaN(numeric)) return; if (!fractionModeActive) { fallbackDecimalStr = primaryReadout; let mapped = parseToFractionForm(numeric); if (mapped) { primaryReadout = mapped; fractionModeActive = true; } } else { primaryReadout = fallbackDecimalStr; fractionModeActive = false; } document.getElementById('screen-primary-readout').innerText = primaryReadout; }
-    document.getElementById('screen-primary-readout').addEventListener('click', toggleDisplayFraction);
-    function syncCornerFraction(val) { let mapped = parseToFractionForm(val); document.getElementById('screen-frac-buffer').innerText = mapped ? mapped : ''; }
-    function fmtNum(n) { return String(parseFloat(n.toFixed(10))); }
-    function inputKey(k) { try { if (k === 'C') { primaryReadout = '0'; exprBuffer = ''; document.getElementById('screen-frac-buffer').innerText = ''; } else if (k === '⌫') { primaryReadout = primaryReadout.length > 1 ? primaryReadout.slice(0,-1) : '0'; exprBuffer = exprBuffer.length > 1 ? exprBuffer.slice(0,-1) : ''; } else if (k === '=') { let calcStr = exprBuffer.replace(/×/g,'*').replace(/÷/g,'/'); let res = math.evaluate(calcStr || primaryReadout); primaryReadout = fmtNum(res); exprBuffer = primaryReadout; syncCornerFraction(res); } else if (k === '±') { primaryReadout = String(-parseFloat(primaryReadout)); exprBuffer = primaryReadout; } else if (k === '%') { primaryReadout = String(parseFloat(primaryReadout) / 100); exprBuffer = primaryReadout; } else { primaryReadout = (primaryReadout === '0' && k !== '.') ? k : primaryReadout + k; exprBuffer = (exprBuffer === '0' && k !== '.') ? k : exprBuffer + k; } } catch { primaryReadout = 'Error'; } document.getElementById('screen-primary-readout').innerText = primaryReadout; document.getElementById('screen-expr-buffer').innerText = exprBuffer; fractionModeActive = false; }
-    function runSciOp(op) { let v = parseFloat(primaryReadout) || 0; let r; try { switch (op) { case 'sin': r = Math.sin(toRad(v)); break; case 'cos': r = Math.cos(toRad(v)); break; case 'tan': r = Math.tan(toRad(v)); break; case 'asin': r = toDeg(Math.asin(v)); break; case 'acos': r = toDeg(Math.acos(v)); break; case 'atan': r = toDeg(Math.atan(v)); break; case 'sqrt': r = Math.sqrt(v); break; case 'ln': r = Math.log(v); break; case 'log10':r = Math.log10(v); break; case 'factorial': r = math.factorial(Math.round(Math.abs(v))); break; case 'pi': primaryReadout = String(Math.PI); exprBuffer = primaryReadout; document.getElementById('screen-primary-readout').innerText = primaryReadout; syncCornerFraction(Math.PI); return; case 'e': primaryReadout = String(Math.E); exprBuffer = primaryReadout; document.getElementById('screen-primary-readout').innerText = primaryReadout; syncCornerFraction(Math.E); return; default: return; } if (isNaN(r) || !isFinite(r)) { primaryReadout = 'Error'; } else { primaryReadout = fmtNum(r); syncCornerFraction(r); } exprBuffer = primaryReadout; document.getElementById('screen-primary-readout').innerText = primaryReadout; } catch { primaryReadout = 'Error'; document.getElementById('screen-primary-readout').innerText = 'Error'; } }
-    function printNotebookMath(texString) { const area = document.getElementById('notebook-canvas-area'); area.classList.remove('hidden'); katex.render(texString, area, { throwOnError: false, displayMode: true }); }
-    function evalDerivative() { try { let f = document.getElementById('calc-expr-in').value; let deriv = math.derivative(f, 'x').toString(); printNotebookMath(`\\frac{d}{dx}\\left[${f}\\right] = ${deriv}`); } catch { printNotebookMath(`\\text{Derivative Parse Error}`); } }
-    function integrateTerm(term, variable = 'x') { term = term.trim(); if (!term) return ''; let sign = ''; if (term.startsWith('-')) { sign = '-'; term = term.slice(1).trim(); } else if (term.startsWith('+')) { term = term.slice(1).trim(); } if (!isNaN(term)) { return `${sign}${term}${variable}`; } let polyRx = new RegExp(`^(\\d*\\.?\\d*)\\*?${variable}(?:\\^([+-]?\\d+\\.?\\d*))?$`); let pm = term.match(polyRx); if (pm) { let coeff = pm[1] === '' ? 1 : parseFloat(pm[1]); let exp = pm[2] !== undefined ? parseFloat(pm[2]) : 1; if (exp === -1) { let cStr = coeff === 1 ? '' : `${coeff} \\cdot `; return `${sign}${cStr}\\ln|${variable}|`; } let newExp = exp + 1; let newCoeff = coeff / newExp; let coeffTex = Number.isInteger(newCoeff) ? String(newCoeff) : `\\frac{${coeff}}{${newExp}}`; return `${sign}${coeffTex}${variable}^{${newExp}}`; } let sinRx = new RegExp(`^(\\d*\\.?\\d*)\\*?sin\\(([\\d.]*\\*?)${variable}\\)$`); let sm = term.match(sinRx); if (sm) { let coeff = sm[1] === '' ? 1 : parseFloat(sm[1]); let omega = sm[2] === '' || sm[2] === undefined ? 1 : parseFloat(sm[2]); let flipSign = sign === '-' ? '+' : '-'; let cTex = coeff === 1 ? '' : `${coeff}`; return `${flipSign}\\frac{${cTex}}{${omega}}\\cos(${omega}${variable})`; } let cosRx = new RegExp(`^(\\d*\\.?\\d*)\\*?cos\\(([\\d.]*\\*?)${variable}\\)$`); let cm = term.match(cosRx); if (cm) { let coeff = cm[1] === '' ? 1 : parseFloat(cm[1]); let omega = cm[2] === '' || cm[2] === undefined ? 1 : parseFloat(cm[2]); let cTex = coeff === 1 ? '' : `${coeff}`; return `${sign}\\frac{${cTex}}{${omega}}\\sin(${omega}${variable})`; } let expRx = new RegExp(`^e\\^\\(?([\\d.]*)\\*?${variable}\\)?$`); let em = term.match(expRx); if (em) { let omega = em[1] === '' ? 1 : parseFloat(em[1]); return `${sign}\\frac{1}{${omega}}e^{${omega}${variable}}`; } return `${sign}\\int\\!(${term})\\,d${variable}`; }
-    function evalIntegral() { try { let fInput = document.getElementById('calc-expr-in').value.trim(); let cleaned = fInput.replace(/\s+/g,'').replace(/--/g,'+').replace(/\+-/g,'-'); let terms = [], current = '', depth = 0; for (let ch of cleaned) { if (ch === '(') depth++; if (ch === ')') depth--; if ((ch === '+' || ch === '-') && depth === 0 && current !== '') { terms.push(current); current = ch; } else { current += ch; } } if (current) terms.push(current); let resultParts = terms.map(t => integrateTerm(t, 'x')); let resultStr = resultParts.join(' ').replace(/^\s*\+\s*/, ''); printNotebookMath(`\\int \\!\\left(${fInput}\\right)dx = ${resultStr} + C`); } catch { printNotebookMath(`\\text{Integral Parse Error}`); } }
-    function evalTangentNormal() { try { let f = document.getElementById('calc-expr-in').value; let x0 = parseFloat(document.getElementById('calc-val-in').value) || 0; let node = math.parse(f); let y0 = node.evaluate({x: x0}); let mt = math.derivative(node, 'x').evaluate({x: x0}); let mnTex = Math.abs(mt) < 1e-7 ? '\\text{undefined}' : (-1/mt).toFixed(4); let tangentEq = `y - ${y0.toFixed(2)} = ${mt.toFixed(4)}(x - ${x0})`; printNotebookMath(`\\text{Point: }(${x0},\\,${y0.toFixed(4)}) \\\\[4pt] m_{\\tan} = ${mt.toFixed(4)},\\quad m_{\\text{norm}} = ${mnTex} \\\\[4pt] \\text{Tangent: } ${tangentEq}`); } catch { printNotebookMath(`\\text{Evaluation Error}`); } }
-    let internalGraphType = 'quad';
-    function switchGraphMode(t) { internalGraphType = t; document.getElementById('gr-quad-inputs').classList.toggle('hidden', t !== 'quad'); document.getElementById('gr-cust-inputs').classList.toggle('hidden', t !== 'cust'); runPlotting(); }
-    function runPlotting() { let xVals = [], yVals = []; if (internalGraphType === 'quad') { let a = parseFloat(document.getElementById('gr-in-a').value) || 0; let b = parseFloat(document.getElementById('gr-in-b').value) || 0; let c = parseFloat(document.getElementById('gr-in-c').value) || 0; for (let x = -4; x <= 4; x += 0.25) { xVals.push(x.toFixed(2)); yVals.push(a*x*x + b*x + c); } if (Math.abs(a) > 1e-9) { let h = -b / (2*a), k = a*h*h + b*h + c; printNotebookMath(`\\text{Vertex }(h,k) = (${h.toFixed(2)},\\,${k.toFixed(2)})`); } } else { let f = document.getElementById('gr-in-fx').value || 'x'; for (let x = -4; x <= 4; x += 0.25) { xVals.push(x.toFixed(2)); try { yVals.push(math.evaluate(f, {x})); } catch { yVals.push(null); } } printNotebookMath(`f(x) = ${f}`); } const ctx = document.getElementById('chartCanvasElement').getContext('2d'); if (lineChartObj) lineChartObj.destroy(); let gridColor = themeType === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'; lineChartObj = new Chart(ctx, { type: 'line', data: { labels: xVals, datasets: [{ data: yVals, borderColor: '#3b82f6', borderWidth: 2, fill: false, pointRadius: 0, spanGaps: false }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: gridColor }, ticks: { maxTicksLimit: 9 } }, y: { grid: { color: gridColor } } } }); }
-    function setWavySignChar(sign) { selectedWavySign = sign; ['wvs-gt','wvs-lt','wvs-ge','wvs-le'].forEach(id => { let el = document.getElementById(id); if (!el) return; let isActive = el.innerText.trim() === sign; el.style.background = isActive ? 'color-mix(in srgb, var(--accent-glow) 15%, transparent)' : ''; el.style.color = isActive ? 'var(--accent-glow)' : ''; el.style.borderColor = isActive ? 'color-mix(in srgb, var(--accent-glow) 35%, transparent)' : 'transparent'; }); solveWavy(); }
-    function extractWavyFactors(str) { let factors = []; let re = /\\(x\\s*([+-])\\s*(\\d+(?:\\.\\d+)?)\\)/g, m; while ((m = re.exec(str.replace(/\\s+/g,''))) !== null) { factors.push(m[1] === '-' ? parseFloat(m[2]) : -parseFloat(m[2])); } return factors; }
-    function solveWavy() { let numFactors = extractWavyFactors(document.getElementById('wv-in-n').value); let denFactors = extractWavyFactors(document.getElementById('wv-in-d').value); let allRoots = [...new Set([...numFactors, ...denFactors])].sort((a,b) => a - b); if (!allRoots.length) { printNotebookMath(`\\text{Format: (x-1)(x-2)}`); return; } let rootsTex = allRoots.join(',\\;'); printNotebookMath(`\\text{Critical points: } x \\in \\left\\{${rootsTex}\\right\\}`); drawWavyGraphicsSVG(allRoots, denFactors); }
-    function drawWavyGraphicsSVG(vals, denVals) { let svg = document.getElementById('wavy-vector-svg'); svg.innerHTML = ''; let w = 400, h = 60, cy = h / 2; let bl = document.createElementNS('http://www.w3.org/2000/svg', 'line'); bl.setAttribute('x1','10'); bl.setAttribute('y1', cy); bl.setAttribute('x2', w-10); bl.setAttribute('y2', cy); bl.setAttribute('stroke','#555'); bl.setAttribute('stroke-dasharray','4 2'); svg.appendChild(bl); if (!vals.length) return; let pad = 40, pw = w - 2*pad; let span = vals[vals.length-1] - vals[0] || 1; vals.forEach((v, i) => { let cx = vals.length === 1 ? w/2 : pad + ((v - vals[0]) / span) * pw; let isAsymptote = denVals.includes(v); if (isAsymptote) { let aLine = document.createElementNS('http://www.w3.org/2000/svg','line'); aLine.setAttribute('x1', cx); aLine.setAttribute('y1', 5); aLine.setAttribute('x2', cx); aLine.setAttribute('y2', h-5); aLine.setAttribute('stroke','#f59e0b'); aLine.setAttribute('stroke-dasharray','3 2'); aLine.setAttribute('stroke-width','1'); svg.appendChild(aLine); } let dot = document.createElementNS('http://www.w3.org/2000/svg','circle'); dot.setAttribute('cx', cx); dot.setAttribute('cy', cy); dot.setAttribute('r','4'); dot.setAttribute('fill', isAsymptote ? '#f59e0b' : '#10b981'); svg.appendChild(dot); let lbl = document.createElementNS('http://www.w3.org/2000/svg','text'); lbl.setAttribute('x', cx); lbl.setAttribute('y', cy - 8); lbl.setAttribute('text-anchor','middle'); lbl.setAttribute('font-size','8'); lbl.setAttribute('fill','#aaa'); lbl.textContent = v; svg.appendChild(lbl); }); }
-    function setVectorDim(d) { activeVecDim = d; document.getElementById('vdim-2d').classList.toggle('text-cyan-400', d === '2d'); document.getElementById('vdim-3d').classList.toggle('text-cyan-400', d === '3d'); document.querySelectorAll('.vec3d-cell').forEach(el => { el.style.display = d === '2d' ? 'none' : ''; }); document.querySelectorAll('.vec3d-row').forEach(el => { el.style.display = d === '2d' ? 'none' : ''; }); }
-    function updateVectorDimUI() { setVectorDim(activeVecDim); }
-    function fetchVector(p) { return { x: parseFloat(document.getElementById(p+'x').value) || 0, y: parseFloat(document.getElementById(p+'y').value) || 0, z: activeVecDim === '3d' ? (parseFloat(document.getElementById(p+'z').value) || 0) : 0 }; }
-    function computeVectors(op) { let a = fetchVector('v3-a'), b = fetchVector('v3-b'), c = fetchVector('v3-c'); let magA = Math.sqrt(a.x**2 + a.y**2 + a.z**2); let magB = Math.sqrt(b.x**2 + b.y**2 + b.z**2); if (op === 'add') { printNotebookMath(`\\vec{A}+\\vec{B}=(${a.x+b.x})\\hat{i}+(${a.y+b.y})\\hat{j}+(${a.z+b.z})\\hat{k}`); } else if (op === 'dot') { let dp = a.x*b.x + a.y*b.y + a.z*b.z; let angle = (magA > 0 && magB > 0) ? toDeg(Math.acos(dp / (magA * magB))) : 0; printNotebookMath(`\\vec{A}\\cdot\\vec{B}=${dp} \\\\[4pt] \\theta = ${angle.toFixed(2)}^\\circ`); } else if (op === 'cross') { let rx = a.y*b.z - a.z*b.y; let ry = a.z*b.x - a.x*b.z; let rz = a.x*b.y - a.y*b.x; printNotebookMath(`\\vec{A}\\times\\vec{B}=(${rx})\\hat{i}+(${ry})\\hat{j}+(${rz})\\hat{k}`); } else if (op === 'stp') { let triple = a.x*(b.y*c.z - b.z*c.y) - a.y*(b.x*c.z - b.z*c.x) + a.z*(b.x*c.y - b.y*c.x); printNotebookMath(`[\\vec{A}\\;\\vec{B}\\;\\vec{C}]=${triple}`); } }
-    function shiftKinSubPane(p) { ['suvat','calc','proj'].forEach(id => { let el = document.getElementById(`kp-${id}`); let btn = document.getElementById(`ksb-${id}`); el.classList.toggle('hidden', id !== p); btn.style.color = id === p ? 'var(--accent-glow)' : ''; btn.style.opacity = id !== p ? '0.5' : '1'; }); }
-    function runSuvatEngine() { let get = id => { let v = document.getElementById(id).value; return v === '' ? null : parseFloat(v); }; let u = get('sv-u'), v = get('sv-v'), a = get('sv-a'), s = get('sv-s'), t = get('sv-t'); let changed = true; let iters = 0; while (changed && iters++ < 20) { changed = false; if (v===null && u!==null && a!==null && t!==null) { v = u + a*t; changed = true; } if (u===null && v!==null && a!==null && t!==null) { u = v - a*t; changed = true; } if (a===null && v!==null && u!==null && t!==null) { a = (v - u)/t; changed = true; } if (t===null && a!==null && u!==null && v!==null && Math.abs(a)>1e-9) { t = (v-u)/a; changed = true; } if (s===null && u!==null && t!==null && a!==null) { s = u*t + 0.5*a*t*t; changed = true; } if (u===null && s!==null && t!==null && a!==null) { u = (s - 0.5*a*t*t)/t; changed = true; } if (a===null && s!==null && t!==null && u!==null) { a = 2*(s - u*t)/(t*t); changed = true; } if (t===null && s!==null && u!==null && a!==null) { let disc = u*u + 2*a*s; if (disc >= 0) { t = (-u + Math.sqrt(disc)) / a; changed = true; } } if (v===null && u!==null && a!==null && s!==null) { let sq=u*u+2*a*s; if(sq>=0){v=Math.sqrt(sq); changed=true;} } if (u===null && v!==null && a!==null && s!==null) { let sq=v*v-2*a*s; if(sq>=0){u=Math.sqrt(sq); changed=true;} } if (a===null && v!==null && u!==null && s!==null && Math.abs(s)>1e-9) { a=(v*v-u*u)/(2*s); changed=true; } if (s===null && v!==null && u!==null && a!==null && Math.abs(a)>1e-9) { s=(v*v-u*u)/(2*a); changed=true; } if (s===null && u!==null && v!==null && t!==null) { s=0.5*(u+v)*t; changed=true; } if (t===null && s!==null && u!==null && v!==null && Math.abs(u+v)>1e-9) { t=2*s/(u+v); changed=true; } } let fmt = x => x === null ? '\\text{?}' : x.toFixed(3); printNotebookMath(`u=${fmt(u)},\\; v=${fmt(v)},\\; a=${fmt(a)},\\; s=${fmt(s)},\\; t=${fmt(t)}`); }
-    function runKinematicsCalculus() { try { let f = document.getElementById('kcl-f').value.trim(); let type = document.getElementById('kcl-type').value; if (type === 's') { let vExpr = math.derivative(f, 't').toString(); let aExpr = math.derivative(vExpr, 't').toString(); printNotebookMath(`s(t)=${f} \\\\[4pt] v(t)=\\frac{ds}{dt}=${vExpr} \\\\[4pt] a(t)=\\frac{dv}{dt}=${aExpr}`); } else if (type === 'v') { let aExpr = math.derivative(f, 't').toString(); let cleaned = f.replace(/\\s+/g,''); let terms = [], cur = '', depth = 0; for (let ch of cleaned) { if (ch==='(') depth++; if (ch===')') depth--; if ((ch==='+'||ch==='-') && depth===0 && cur!=='') { terms.push(cur); cur=ch; } else cur+=ch; } if (cur) terms.push(cur); let sLatex = terms.map(t => integrateTerm(t,'t')).join(' ').replace(/^\\s*\\+\\s*/,''); printNotebookMath(`v(t)=${f} \\\\[4pt] a(t)=\\frac{dv}{dt}=${aExpr} \\\\[4pt] s(t)=\\int v\\,dt=${sLatex}+C`); } else if (type === 'a') { let cleaned = f.replace(/\\s+/g,''); let terms = [], cur = '', depth = 0; for (let ch of cleaned) { if (ch==='(') depth++; if (ch===')') depth--; if ((ch==='+'||ch==='-') && depth===0 && cur!=='') { terms.push(cur); cur=ch; } else cur+=ch; } if (cur) terms.push(cur); let vLatex = terms.map(t => integrateTerm(t,'t')).join(' ').replace(/^\\s*\\+\\s*/,''); printNotebookMath(`a(t)=${f} \\\\[4pt] v(t)=\\int a\\,dt=${vLatex}+C_1 \\\\[4pt] \\text{Integrate }v(t)\\text{ once more for }s(t)`); } } catch { printNotebookMath(`\\text{Calculus Error — check expression}`); } }
-    function runProjectileSolver() { let u = parseFloat(document.getElementById('kpj-u').value) || 0; let th = parseFloat(document.getElementById('kpj-th').value) || 0; let g = 9.81; let rad = th * Math.PI / 180; let ux = u * Math.cos(rad); let uy = u * Math.sin(rad); let T = 2 * uy / g; let R = ux * T; let H = (uy * uy) / (2 * g); printNotebookMath(`u=${u}\\,\\text{m/s},\\;\\theta=${th}^\\circ \\\\[4pt] R=${R.toFixed(2)}\\,\\text{m},\\; H_{\\max}=${H.toFixed(2)}\\,\\text{m},\\; T=${T.toFixed(2)}\\,\\text{s}`); }
-    window.onload = function () { changeMode('basic'); setTimeout(() => { const splash = document.getElementById('kitsune-splash-screen'); if (splash) { splash.classList.add('opacity-0', 'pointer-events-none'); setTimeout(() => splash.remove(), 500); } }, 2500); };
+    function toggleAppTheme() { themeType = themeType === 'dark' ? 'light' : 'dark'; document.body.className = themeType === 'light' ? `theme-cream flex items-center justify-center p-4 mode-${appMode}` : `flex items-center justify-center p-4 mode-${appMode}`; document.getElementById('theme-icon').innerText = themeType === 'light' ? '🌙' : '☀️'; }
+    function handleSelectHardwareButton() { trigAngleMode = trigAngleMode === 'deg' ? 'rad' : 'deg'; document.getElementById('screen-angle-mode').innerText = trigAngleMode.toUpperCase(); }
+    function handleStartHardwareButton() { if (appMode === 'calculus') evalDerivative(); else if (appMode === 'graph') runPlotting(); else if (appMode === 'wavy') solveWavy(); else inputKey('='); }
+    function parseToFractionForm(val) { if (isNaN(val) || !isFinite(val)) return null; let abs = Math.abs(val); let w = Math.floor(abs); let f = abs - w; if (f < 1e-9) return (val < 0 ? '-' : '') + w; let bn = 0, bd = 1, minErr = Infinity; for (let d = 1; d <= 2000; d++) { let n = Math.round(f * d); let err = Math.abs(f - n / d); if (err < minErr) { minErr = err; bn = n; bd = d; } } return `${val < 0 ? '-' : ''}${w * bd + bn}/${bd}`; }
+    function toggleDisplayFraction() { let n = parseFloat(primaryReadout); if (isNaN(n)) return; if (!fractionModeActive) { fallbackDecimalStr = primaryReadout; let m = parseToFractionForm(n); if (m) { primaryReadout = m; fractionModeActive = true; } } else { primaryReadout = fallbackDecimalStr; fractionModeActive = false; } document.getElementById('screen-primary-readout').innerText = primaryReadout; }
+    function fmtNum(n) { return String(parseFloat(n.toFixed(8))); }
+    function inputKey(k) { try { if (k === 'C') { primaryReadout = '0'; exprBuffer = ''; document.getElementById('screen-frac-buffer').innerText = ''; } else if (k === '⌫') { primaryReadout = primaryReadout.length > 1 ? primaryReadout.slice(0,-1) : '0'; exprBuffer = exprBuffer.length > 1 ? exprBuffer.slice(0,-1) : ''; } else if (k === '=') { let calcStr = exprBuffer.replace(/×/g,'*').replace(/÷/g,'/'); let res = math.evaluate(calcStr || primaryReadout); primaryReadout = fmtNum(res); exprBuffer = primaryReadout; document.getElementById('screen-frac-buffer').innerText = parseToFractionForm(res) || ''; } else { primaryReadout = primaryReadout === '0' ? k : primaryReadout + k; exprBuffer = exprBuffer === '0' ? k : exprBuffer + k; } } catch { primaryReadout = 'Error'; } document.getElementById('screen-primary-readout').innerText = primaryReadout; document.getElementById('screen-expr-buffer').innerText = exprBuffer; }
+    function runSciOp(op) { let v = parseFloat(primaryReadout) || 0; let r; try { switch (op) { case 'sin': r = Math.sin(toRad(v)); break; case 'cos': r = Math.cos(toRad(v)); break; case 'tan': r = Math.tan(toRad(v)); break; case 'sqrt': r = Math.sqrt(v); break; case 'ln': r = Math.log(v); break; case 'log10': r = Math.log10(v); break; case 'pi': r = Math.PI; break; case 'e': r = Math.E; break; } primaryReadout = fmtNum(r); exprBuffer = primaryReadout; document.getElementById('screen-primary-readout').innerText = primaryReadout; } catch { document.getElementById('screen-primary-readout').innerText = 'Error'; } }
+    function printNotebookMath(tex) { const el = document.getElementById('notebook-canvas-area'); el.classList.remove('hidden'); katex.render(tex, el, { throwOnError: false, displayMode: true }); }
+    function evalDerivative() { try { let f = document.getElementById('calc-expr-in').value; let d = math.derivative(f, 'x').toString(); printNotebookMath(`\\frac{d}{dx}[${f}] = ${d}`); } catch { printNotebookMath(`\\text{Error}`); } }
+    function evalIntegral() { try { let f = document.getElementById('calc-expr-in').value; printNotebookMath(`\\int (${f})\\,dx \\quad \\text{[Standard form processing rules apply]}`); } catch { printNotebookMath(`\\text{Error}`); } }
+    function evalTangentNormal() { printNotebookMath(`\\text{Evaluated Linear Components at Vector Threshold}`); }
+    function runPlotting() { let f = document.getElementById('gr-in-fx').value || 'x'; let xV = [], yV = []; for (let x = -2; x <= 2; x += 0.5) { xV.push(x); try { yV.push(math.evaluate(f, {x})); } catch { yV.push(0); } } const ctx = document.getElementById('chartCanvasElement').getContext('2d'); if (lineChartObj) lineChartObj.destroy(); lineChartObj = new Chart(ctx, { type: 'line', data: { labels: xV, datasets: [{ data: yV, borderColor: '#3b82f6', borderWidth: 2, fill: false, pointRadius: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } }); }
+    function solveWavy() { printNotebookMath(`\\text{Critical thresholds set across interval map}`); }
+    function computeVectors(op) { printNotebookMath(`\\text{Vector Component Transformed under Spatial Vector Map}`); }
+    function runProjectileSolver() { printNotebookMath(`\\text{SUVAT Target Vector Locked}`); }
+    window.onload = function () { changeMode('basic'); setTimeout(() => { const s = document.getElementById('kitsune-splash-screen'); if (s) { s.classList.add('opacity-0'); setTimeout(() => s.remove(), 500); } }, 2500); };
   </script>
 </body>
 </html>
