@@ -1,0 +1,15 @@
+{
+  "name": "Kitsune Handheld Suite",
+  "short_name": "Kitsune",
+  "start_url": "index.html",
+  "display": "fullscreen",
+  "background_color": "#0a0b0d",
+  "theme_color": "#22d3ee",
+  "icons": [
+    {
+      "src": "1000174123.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
