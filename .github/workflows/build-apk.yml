@@ -58,11 +58,9 @@ jobs:
           docker run --rm \
             -v "$PWD":/app \
             -w /app \
-            -e BUBBLEWRAP_KEYSTORE_PASSWORD="kitsunepass" \
-            -e BUBBLEWRAP_KEY_PASSWORD="kitsunepass" \
             --entrypoint /bin/sh \
             ghcr.io/googlechromelabs/bubblewrap:latest \
-            -c "yes | bubblewrap update && yes | bubblewrap build --skipPwaValidation"
+            -c "yes | bubblewrap update && bubblewrap build --skipPwaValidation --signingKeyPath=./kitsune.keystore --signingKeyPassword=kitsunepass --keyPairPassword=kitsunepass"
 
       - name: Upload Finished APK Package
         uses: actions/upload-artifact@v4
