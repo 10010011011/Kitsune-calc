@@ -55,13 +55,15 @@ jobs:
 
       - name: Compile Inside Official Google Container
         run: |
+          # Override the entrypoint to /bin/sh so we can run the generate-and-build command sequence
           docker run --rm \
             -v "$PWD":/app \
             -w /app \
             -e BUBBLEWRAP_KEYSTORE_PASSWORD="kitsunepass" \
             -e BUBBLEWRAP_KEY_PASSWORD="kitsunepass" \
+            --entrypoint /bin/sh \
             ghcr.io/googlechromelabs/bubblewrap:latest \
-            build --skipPwaValidation
+            -c "bubblewrap update && bubblewrap build --skipPwaValidation"
 
       - name: Upload Finished APK Package
         uses: actions/upload-artifact@v4
@@ -70,5 +72,3 @@ jobs:
           path: |
             *.apk
             **/*.apk
-            output/*.apk
-            
