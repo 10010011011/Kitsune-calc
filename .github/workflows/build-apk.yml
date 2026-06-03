@@ -1,0 +1,42 @@
+name: Generate Shareable Kitsune APK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js Environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Bubblewrap CLI Wrapper
+        run: npm install -g @bubblewrap/cli
+
+      - name: Initialize Android App Container
+        run: |
+          bubblewrap init --manifest=https://10010011011.github.io/Kitsune-calc/manifest.json --meta=options.json || true
+          echo '{"domain":"10010011011.github.io","urlPath":"/Kitsune-calc/","name":"Kitsune Handheld Suite","shortName":"Kitsune","themeColor":"#22d3ee","backgroundColor":"#0a0b0d","startUrl":"https://10010011011.github.io/Kitsune-calc/index.html","icon":"https://10010011011.github.io/Kitsune-calc/imresizer-file_00000000e1bc7207bd9f7023a8dee8f0%20(1).png","signingKey":{"path":"./kitsune.keystore","alias":"kitsune"},"apkVersionCode":1,"apkVersionName":"1.0.0","display":"fullscreen","orientation":"portrait"}' > twa-manifest.json
+
+      - name: Generate Dummy Keystore Signature
+        run: |
+          keytool -genkey -v -keystore kitsune.keystore -alias kitsune -keyalg RSA -keysize 2048 -validity 10000 -storepass kitsunepass -keypass kitsunepass -dname "CN=Kitsune, OU=Dev, O=Math, L=Bhagalpur, S=Bihar, C=IN"
+
+      - name: Build Signed Production APK
+        run: |
+          bubblewrap build --signingKeyPath=./kitsune.keystore --signingKeyPassword=kitsunepass --keyPairPassword=kitsunepass
+        continue-on-error: true
+
+      - name: Upload Finished APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Kitsune-Handheld-APK
+          path: ./*.apk
