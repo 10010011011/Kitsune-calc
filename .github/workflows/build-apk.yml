@@ -27,20 +27,25 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Build Android App via CLI
+      - name: Configure Bubblewrap and Build App
         run: |
           npm install -g @bubblewrap/cli
-          # Generate the precise automated options block required by Bubblewrap to avoid the interactive prompt freeze
+          
+          # Force-feed GitHub's pre-installed Android SDK and Java system paths directly into Bubblewrap configuration
+          mkdir -p ~/.bubblewrap
+          echo "{\"jdkPath\":\"${JAVA_HOME}\",\"androidSdkPath\":\"${ANDROID_HOME}\"}" > ~/.bubblewrap/config.json
+          
+          # Write out your app's compilation blueprint file
           echo '{"domain":"10010011011.github.io","urlPath":"/Kitsune-calc/","name":"Kitsune Handheld Suite","shortName":"Kitsune","themeColor":"#22d3ee","backgroundColor":"#0a0b0d","startUrl":"https://10010011011.github.io/Kitsune-calc/index.html","icon":"https://10010011011.github.io/Kitsune-calc/imresizer-file_00000000e1bc7207bd9f7023a8dee8f0%20(1).png","signingKey":{"path":"./kitsune.keystore","alias":"kitsune"},"apkVersionCode":1,"apkVersionName":"1.0.0","display":"fullscreen","orientation":"portrait"}' > twa-manifest.json
           
-          # Generate the local keystore asset signature automatically
+          # Generate your standalone application signature keystore
           keytool -genkey -v -keystore kitsune.keystore -alias kitsune -keyalg RSA -keysize 2048 -validity 10000 -storepass kitsunepass -keypass kitsunepass -dname "CN=Kitsune, OU=Dev, O=Math, L=Bhagalpur, S=Bihar, C=IN"
           
-          # Use Bubblewrap's build command with explicit non-interactive flags to compile the package
-          bubblewrap build --manifest="https://10010011011.github.io/Kitsune-calc/manifest.json" --signingKeyPath=./kitsune.keystore --signingKeyPassword=kitsunepass --keyPairPassword=kitsunepass --skipWebManifestValidation || true
+          # Pipe standard affirmations into the compiler to auto-sign licenses and build the real APK asset
+          yes | bubblewrap build --signingKeyPath=./kitsune.keystore --signingKeyPassword=kitsunepass --keyPairPassword=kitsunepass --skipWebManifestValidation
 
       - name: Upload Finished APK Package
         uses: actions/upload-artifact@v4
         with:
           name: Kitsune-Shareable-APK
-          path: ./*.apk
+          path: ./**/*.apk
