@@ -7,16 +7,18 @@
   
   <link rel="manifest" href="manifest.json">
   
-  <script src="./3.4.17"></script>
-  <script src="./math.js"></script>
-  <script src="./chart.js"></script>
-  <link rel="stylesheet" href="./katex.min.css">
-  <script src="./katex.min.js"></script>
+    <script src="3.4.17"></script>
+  <script src="math.js"></script>
+  <script src="chart.js"></script>
+  <link rel="stylesheet" href="katex.min.css">
+  <script src="katex.min.js"></script>
+
   
   <style>
-    @font-face { font-family: 'Press Start 2P'; src: url('./PressStart2P-Regular.ttf') format('truetype'); font-weight: 400; font-display: block; }
-    @font-face { font-family: 'Courier Prime'; src: url('./CourierPrime-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-    @font-face { font-family: 'Plus Jakarta Sans'; src: url('./PlusJakartaSans[wght].ttf') format('truetype'); font-weight: 100 900; font-display: swap; }
+        @font-face { font-family: 'Press Start 2P'; src: url('PressStart2P-Regular.ttf') format('truetype'); font-weight: 400; font-display: block; }
+    @font-face { font-family: 'Courier Prime'; src: url('CourierPrime-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Plus Jakarta Sans'; src: url('PlusJakartaSans[wght].ttf') format('truetype'); font-weight: 100 900; font-display: swap; }
+
     :root { --bg-env: #0a0b0d; --console-body: #1c1e22; --screen-border: #2d3139; --screen-bg: #0f1012; --text-screen: #ffffff; --text-hardware: #22d3ee; --text-hardware-muted: #8090a0; --accent-glow: #22d3ee; --btn-bg: #2b2e33; --btn-text: #ffffff; --btn-op-bg: #1e2022; --btn-op-text: #22d3ee; --shadow-console: 0 25px 50px -12px rgba(0,0,0,0.8); --shadow-inset: inset 2px 2px 6px rgba(0,0,0,0.65); --shadow-button: inset 1px 1px 2px rgba(255,255,255,0.08), 3px 4px 6px rgba(0,0,0,0.5); --shadow-button-active: inset 3px 3px 6px rgba(0,0,0,0.7); }
     .theme-cream { --bg-env: #f3f0e4; --console-body: #ebdcb9; --screen-border: #dac9a6; --screen-bg: #faf8f2; --text-screen: #1c1c1e; --text-hardware: #475569; --text-hardware-muted: #788596; --accent-glow: #ea580c; --btn-bg: #fdfbf7; --btn-text: #1c1c1e; --btn-op-bg: #dfd3b4; --btn-op-text: #d97706; --shadow-console: 0 25px 50px -12px rgba(120,110,90,0.45); --shadow-inset: inset 2px 2px 5px rgba(0,0,0,0.12); --shadow-button: inset 1px 1px 2px rgba(255,255,255,0.9), 3px 4px 6px rgba(160,150,130,0.3); --shadow-button-active: inset 2px 2px 4px rgba(0,0,0,0.15); }
     body { background-color: var(--bg-env); color: var(--text-hardware); font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow-x: hidden; min-height: 100vh; }
@@ -71,8 +73,8 @@
 </head>
 <body class="flex items-center justify-center p-4 select-none">
 
-  <div id="kitsune-splash-screen" class="fixed inset-0 z-[99999] flex items-center justify-center bg-[#fdfdfd] transition-opacity duration-500 ease-in-out">
-    <img src="./1000174121.png" alt="Loading Suite..." class="h-full w-full object-contain max-w-md animate-splash p-2">
+    <div id="kitsune-splash-screen" class="fixed inset-0 z-[99999] flex items-center justify-center bg-[#fdfdfd] transition-opacity duration-500 ease-in-out">
+    <img src="1000174121.png" alt="Loading Suite..." class="h-full w-full object-contain max-w-md animate-splash p-2">
   </div>
 
   <div class="console-shell w-full p-5 flex flex-col justify-between border-t-2">
