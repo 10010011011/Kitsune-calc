@@ -19,39 +19,50 @@ jobs:
       - name: Generate Signing Keystore and App Blueprint
         run: |
           keytool -genkey -v -keystore kitsune.keystore -alias kitsune -keyalg RSA -keysize 2048 -validity 10000 -storepass kitsunepass -keypass kitsunepass -dname "CN=Kitsune, OU=Dev, O=Math, L=Bhagalpur, S=Bihar, C=IN"
-          echo '{
-            "domain": "10010011011.github.io",
-            "urlPath": "/Kitsune-calc/",
-            "name": "Kitsune Handheld Suite",
-            "shortName": "Kitsune",
+          
+          cat << 'EOF' > twa-manifest.json
+          {
             "packageId": "com.kitsune.calc",
-            "themeColor": "#22d3ee",
-            "backgroundColor": "#0a0b0d",
-            "startUrl": "https://10010011011.github.io/Kitsune-calc/index.html",
-            "iconUrl": "https://10010011011.github.io/Kitsune-calc/imresizer-file_00000000e1bc7207bd9f7023a8dee8f0%20(1).png",
-            "signingKey": {
-              "path": "./kitsune.keystore",
-              "alias": "kitsune"
-            },
-            "versionCode": 1,
-            "versionName": "1.0.0",
+            "host": "10010011011.github.io",
+            "name": "Kitsune Handheld Suite",
+            "launcherName": "Kitsune",
             "display": "fullscreen",
-            "orientation": "portrait",
-            "fallbackType": "customtabs",
-            "features": {},
-            "alphaDependencies": false,
-            "enableNotifications": false,
-            "webManifestUrl": "https://10010011011.github.io/Kitsune-calc/manifest.json",
+            "themeColor": "#0a0b0d",
+            "themeColorDark": "#0a0b0d",
             "navigationColor": "#0a0b0d",
             "navigationColorDark": "#0a0b0d",
             "navigationDividerColor": "#0a0b0d",
             "navigationDividerColorDark": "#0a0b0d",
+            "backgroundColor": "#0a0b0d",
+            "startUrl": "/Kitsune-calc/index.html",
+            "iconUrl": "https://10010011011.github.io/Kitsune-calc/imresizer-file_00000000e1bc7207bd9f7023a8dee8f0%20(1).png",
+            "maskableIconUrl": "https://10010011011.github.io/Kitsune-calc/imresizer-file_00000000e1bc7207bd9f7023a8dee8f0%20(1).png",
             "splashScreenFadeOutDuration": 300,
-            "enableSiteSettingsShortcut": true,
+            "signingKey": {
+              "path": "./kitsune.keystore",
+              "alias": "kitsune"
+            },
+            "appVersionName": "1.0",
+            "appVersionCode": 1,
+            "appVersion": "1.0",
             "shortcuts": [],
+            "generatorApp": "bubblewrap-cli",
+            "webManifestUrl": "https://10010011011.github.io/Kitsune-calc/manifest.json",
+            "fallbackType": "customtabs",
+            "features": {},
+            "alphaDependencies": {
+              "enabled": false
+            },
+            "enableSiteSettingsShortcut": true,
+            "isChromeOSOnly": false,
+            "isMetaQuest": false,
+            "minSdkVersion": 19,
+            "orientation": "portrait",
             "fingerprints": [],
-            "additionalTrustedOrigins": []
-          }' > twa-manifest.json
+            "additionalTrustedOrigins": [],
+            "retainedBundles": []
+          }
+          EOF
 
       - name: Compile Inside Official Google Container
         run: |
@@ -60,7 +71,7 @@ jobs:
             -w /app \
             --entrypoint /bin/sh \
             ghcr.io/googlechromelabs/bubblewrap:latest \
-            -c "yes | bubblewrap update && bubblewrap build --skipPwaValidation --signingKeyPath=./kitsune.keystore --signingKeyPassword=kitsunepass --keyPairPassword=kitsunepass"
+            -c "bubblewrap update && bubblewrap build --skipPwaValidation --signingKeyPath=./kitsune.keystore --signingKeyPassword=kitsunepass --keyPairPassword=kitsunepass"
 
       - name: Upload Finished APK Package
         uses: actions/upload-artifact@v4
