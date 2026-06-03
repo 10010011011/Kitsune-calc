@@ -71,7 +71,7 @@ jobs:
             -w /app \
             --entrypoint /bin/sh \
             ghcr.io/googlechromelabs/bubblewrap:latest \
-            -c "bubblewrap build --skipPwaValidation --signingKeyPath=./kitsune.keystore --signingKeyPassword=kitsunepass --keyPairPassword=kitsunepass"
+            -c "yes | bubblewrap build --skipPwaValidation --signingKeyPath=./kitsune.keystore --signingKeyPassword=kitsunepass --keyPairPassword=kitsunepass"
 
       - name: Upload Finished APK Package
         uses: actions/upload-artifact@v4
@@ -80,3 +80,4 @@ jobs:
           path: |
             *.apk
             **/*.apk
+            
