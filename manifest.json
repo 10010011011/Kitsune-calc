@@ -1,15 +1,19 @@
 {
   "name": "Kitsune Handheld Suite",
   "short_name": "Kitsune",
-  "start_url": "index.html",
+  "description": "An advanced scientific handheld calculator suite featuring calculus, graphing, vectors, and kinematics templates.",
+  "start_url": "https://10010011011.github.io/Kitsune-calc/index.html",
   "display": "fullscreen",
+  "orientation": "portrait",
   "background_color": "#0a0b0d",
   "theme_color": "#22d3ee",
   "icons": [
     {
-      "src": "1000174123.png",
+      "src": "https://10010011011.github.io/Kitsune-calc/icon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
+
