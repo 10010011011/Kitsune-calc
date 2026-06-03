@@ -6,6 +6,9 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build-apk:
     runs-on: ubuntu-latest
@@ -13,37 +16,48 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Set up Java JDK Environment
+      - name: Set up Java JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Set up Android SDK
+      - name: Setup Android SDK Tools
         uses: android-actions/setup-android@v3
 
-      - name: Clone WebView Native Container
+      - name: Scaffold Native Android App Project
         run: |
-          git clone https://github.com/S64/android-webview-app-template.git native-app
-          cd native-app
+          mkdir -p app/src/main/java/com/kitsune/calc
+          mkdir -p app/src/main/res/layout
+          mkdir -p app/src/main/res/values
           
-          # Inject your specific website URL directly into the application layout configuration
-          sed -i 's|https://example.com|https://10010011011.github.io/Kitsune-calc/|g' app/src/main/res/values/strings.xml
+          # Write out base gradle settings
+          echo "pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }; dependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS); repositories { google(); mavenCentral() } }; rootProject.name = 'KitsuneCalc'" > settings.gradle
           
-          # Set up app name matching your suite
-          sed -i 's/Web App Template/Kitsune Handheld Suite/g' app/src/main/res/values/strings.xml
+          # Write out build execution variables
+          echo "plugins { id 'com.android.application' version '8.1.1' }; android { namespace 'com.kitsune.calc'; compileSdk 34; defaultConfig { applicationId 'com.kitsune.calc'; minSdk 21; targetSdk 34; versionCode 1; versionName '1.0' }; buildTypes { release { minifyEnabled false } } }" > build.gradle
+          echo "plugins { id 'com.android.application' version '8.1.1' apply false }" > ../build.gradle
           
-          # Force true fullscreen mode matching your manifest intent
-          sed -i '/<application/a \        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"' app/src/main/AndroidManifest.xml
+          # Generate basic layout containing the app viewport canvas
+          echo '<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/apk/res/android" android:layout_width="match_index" android:layout_height="match_index" android:orientation="vertical"><WebView android:id="@+id/webview" android:layout_width="match_parent" android:layout_height="match_parent" /></LinearLayout>' > app/src/main/res/layout/activity_main.xml
+          
+          # Inject App title metadata string matching your suite
+          echo '<?xml version="1.0" encoding="utf-8"?><resources><string name="app_name">Kitsune Handheld Suite</string></resources>' > app/src/main/res/values/strings.xml
+          
+          # Generate security layer configuration for structural components
+          echo '<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android="http://schemas.android.com/apk/apk/res/android"><uses-permission android:name="android.permission.INTERNET" /><application android:allowBackup="true" android:label="@string/app_name" android:supportsRtl="true"><activity android:name=".MainActivity" android:exported="true" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"><intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter></activity></application></manifest>' > app/src/main/AndroidManifest.xml
+          
+          # Write core Java program logic hooking directly to your live hosted setup URL
+          echo 'package com.kitsune.calc; import android.os.Bundle; import android.webkit.WebSettings; import android.webkit.WebView; import android.webkit.WebViewClient; import androidx.appcompat.app.AppCompatActivity; public class MainActivity extends AppCompatActivity { @Override protected void onCreate(Bundle savedInstanceState) { super.onCreate(Bundle savedInstanceState); setContentView(R.layout.activity_main); WebView myWebView = (WebView) findViewById(R.id.webview); WebSettings webSettings = myWebView.getSettings(); webSettings.setJavaScriptEnabled(true); webSettings.setDomStorageEnabled(true); myWebView.setWebViewClient(new WebViewClient()); myWebView.loadUrl("https://10010011011.github.io/Kitsune-calc/"); } }' > app/src/main/java/com/kitsune/calc/MainActivity.java
 
-      - name: Compile Production APK File
-        run: |
-          cd native-app
-          chmod +x gradlew
-          ./gradlew assembleRelease
+      - name: Initialize Wrapper Core Compilation Environment
+        run: gradle wrapper --gradle-version 8.1.1
 
-      - name: Upload Finished APK Artifact
+      - name: Assemble Release APK Archive Build
+        run: ./gradlew assembleRelease
+
+      - name: Upload Finished APK Artifact Package
         uses: actions/upload-artifact@v4
         with:
           name: Kitsune-Shareable-APK
-          path: native-app/app/build/outputs/apk/release/*.apk
+          path: app/build/outputs/apk/release/*.apk
