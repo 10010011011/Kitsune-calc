@@ -99,7 +99,7 @@
 </head>
 <body class="flex items-center justify-center p-4 select-none mode-basic">
 
-  <!-- RESTORED MASCOT IMAGE SPLASH SCREEN -->
+  <!-- MASCOT IMAGE SPLASH SCREEN -->
   <div id="kitsune-splash-screen" class="fixed inset-0 z-[99999] flex items-center justify-center bg-[#0a0b0d] transition-opacity duration-500 ease-in-out">
     <img src="1000174121.png" alt="Loading Suite..." class="h-full w-full object-contain max-w-md animate-splash p-2" onerror="this.style.display='none';">
   </div>
@@ -288,7 +288,7 @@
         <div id="kp-calc" class="kin-subpane">
           <div class="text-[8px] opacity-50 mb-1">Enter equation in variable t (e.g., 3*t^2 + 2*t)</div>
           <div class="flex gap-1 mb-1">
-            <input type="text" id="kcl-expr" value="3*t^2 + 2*t" class="flex-1 p-1.5 app-input font-mono text-center text-xs">
+            <input type="text" id="kcl-expr" value="3*t^2 + 2*t" class="flex-1 min-w-0 p-1.5 app-input font-mono text-center text-xs">
             <select id="kcl-type" class="p-1.5 app-input text-[10px] font-bold text-yellow-500 bg-[#0f1012]">
               <option value="s">s(t) given</option>
               <option value="v">v(t) given</option>
@@ -298,13 +298,13 @@
           <button onclick="runKinCalc()" class="w-full py-1.5 deck-btn rounded font-bold text-[10px]">Run Calculus transition</button>
         </div>
 
-        <!-- Projectile pane -->
+        <!-- Projectile pane (FIXED: min-w-0 added to prevent horizontal screen breakout) -->
         <div id="kp-proj" class="kin-subpane">
           <div class="text-[8px] opacity-50 mb-1">Initial speed (m/s) + launch angle (°)</div>
           <div class="flex gap-1 mb-1">
-            <input type="number" id="kpj-u"  value="20" placeholder="u m/s" class="flex-1 p-1.5 app-input text-center font-mono text-xs">
-            <input type="number" id="kpj-th" value="30" placeholder="θ°"    class="flex-1 p-1.5 app-input text-center font-mono text-xs">
-            <input type="number" id="kpj-h0" value="0"  placeholder="h₀ m"  class="flex-1 p-1.5 app-input text-center font-mono text-xs">
+            <input type="number" id="kpj-u"  value="20" placeholder="u m/s" class="flex-1 min-w-0 p-1.5 app-input text-center font-mono text-xs">
+            <input type="number" id="kpj-th" value="30" placeholder="θ°"    class="flex-1 min-w-0 p-1.5 app-input text-center font-mono text-xs">
+            <input type="number" id="kpj-h0" value="0"  placeholder="h₀ m"  class="flex-1 min-w-0 p-1.5 app-input text-center font-mono text-xs">
           </div>
           <button onclick="runProjectile()" class="w-full py-1.5 deck-btn rounded font-bold text-[10px]">Analyze</button>
         </div>
@@ -1045,7 +1045,8 @@
     
     let primary = solutions.find(sol => sol.t >= 0) || solutions[0];
     const writeF = (id, val) => { el(id).value = parseFloat(val.toFixed(4)); };
-    writeF('sv-s', primary.s); writeF('sv-u', primary.u); writeF('sv-v', primary.v); writeF('sv-a', primary.a); writeF('sv-t', primary.t);
+    writeF('sv-s', primary.s); writeF('sv-u', primary.u); writeF('sv-v', primary.v);
+    writeF('sv-a', primary.a); writeF('sv-t', primary.t);
     
     let tex = `\\text{SUVAT Solved Successfully!} \\\\[4pt]`;
     solutions.forEach((sol, idx) => {
@@ -1092,3 +1093,5 @@
   </script>
 </body>
 </html>
+
+
