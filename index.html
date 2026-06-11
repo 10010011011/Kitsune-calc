@@ -6,19 +6,7 @@
   <title>Kitsune Handheld Suite</title>
   <link rel="manifest" href="manifest.json">
 
-  <!-- OFFLINE ASSET CHECKLIST — all files sit next to this HTML
-    math.js              mathjs  (rename math.min.js → math.js)
-    chart.js             Chart.js (rename chart.umd.min.js → chart.js)
-    katex.min.css        KaTeX stylesheet
-    katex.min.js         KaTeX renderer
-    all.min.css          Font Awesome CSS
-    webfonts/            Font Awesome webfonts folder (next to all.min.css)
-    PressStart2P-Regular.ttf   Nintendo pixel font
-    CourierPrime-Regular.ttf   Courier Prime regular
-    PlusJakartaSans[wght].ttf  Plus Jakarta Sans variable
-    tailwind.min.js      swap CDN src below once downloaded
-  -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="tailwind.min.js"></script>
   <script src="./math.js"></script>
   <script src="./chart.js"></script>
   <link  rel="stylesheet" href="./katex.min.css">
@@ -51,7 +39,6 @@
       --shadow-button-active:inset 2px 2px 4px rgba(0,0,0,0.15);
     }
 
-    /* ── Mode accent colours ── */
     body.mode-basic      { --accent-glow:#22d3ee; --btn-op-text:#22d3ee; }
     body.mode-scientific { --accent-glow:#a78bfa; --btn-op-text:#a78bfa; }
     body.mode-calculus   { --accent-glow:#f472b6; --btn-op-text:#f472b6; }
@@ -67,11 +54,11 @@
     body.theme-cream.mode-vectors    { --accent-glow:#c2410c; }
     body.theme-cream.mode-kinematics { --accent-glow:#b45309; }
 
-    body { background-color:var(--bg-env); color:var(--text-hardware); font-family:'Plus Jakarta Sans',sans-serif; transition:background-color 0.3s ease, color 0.3s ease; overflow-x:hidden; min-height:100vh; }
-    .console-shell { background-color:var(--console-body); box-shadow:var(--shadow-console); border:4px solid rgba(255,255,255,0.02); border-radius:36px; max-width:440px; margin: 0 auto; }
-    .game-screen-area { background-color:var(--screen-bg); border:8px solid var(--screen-border); color:var(--text-screen); box-shadow:var(--shadow-inset); border-radius:18px; transition:border-color 0.4s ease; }
+    body { background-color:var(--bg-env); color:var(--text-hardware); font-family:'Plus Jakarta Sans',sans-serif; overflow-x:hidden; min-height:100vh; }
+    .console-shell { background-color:var(--console-body); box-shadow:var(--shadow-console); border:4px solid rgba(255,255,255,0.02); border-radius:36px; max-width:440px; margin:0 auto; }
+    .game-screen-area { background-color:var(--screen-bg); border:8px solid var(--screen-border); color:var(--text-screen); box-shadow:var(--shadow-inset); border-radius:18px; will-change:border-color; }
     .screen-accent-border { border-color:var(--accent-glow) !important; }
-    .tactile-btn { background:var(--btn-bg); color:var(--btn-text); box-shadow:var(--shadow-button); border-radius:50%; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; font-family:'Press Start 2P',monospace; font-size:0.65rem; font-weight:700; transition:all 0.05s ease; user-select:none; -webkit-tap-highlight-color:transparent; cursor:pointer; border:none; }
+    .tactile-btn { background:var(--btn-bg); color:var(--btn-text); box-shadow:var(--shadow-button); border-radius:50%; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; font-family:'Press Start 2P',monospace; font-size:0.65rem; font-weight:700; transition:box-shadow 0.05s ease, transform 0.05s ease; user-select:none; -webkit-tap-highlight-color:transparent; cursor:pointer; border:none; }
     .tactile-btn:active { box-shadow:var(--shadow-button-active); transform:scale(0.95); }
     .tactile-btn-op { background:var(--btn-op-bg); color:var(--btn-op-text); }
     .tactile-btn-action { background:var(--accent-glow); color:var(--bg-env); }
@@ -81,25 +68,45 @@
     .notebook-render { font-family:'Courier Prime',monospace; }
     .app-input { font-family:'Courier Prime',monospace; background:var(--screen-bg); border:1px solid var(--screen-border); color:var(--text-screen); border-radius:8px; }
     .app-input:focus { border-color:var(--accent-glow); outline:none; box-shadow:0 0 0 2px color-mix(in srgb, var(--accent-glow) 20%, transparent); }
-    .sci-btn { background:var(--btn-bg); color:var(--text-screen); box-shadow:var(--shadow-button); border-radius:10px; padding:0.5rem 0; font-weight:600; font-size:0.72rem; transition:all 0.05s ease; user-select:none; border:none; cursor:pointer; }
+    .sci-btn { background:var(--btn-bg); color:var(--text-screen); box-shadow:var(--shadow-button); border-radius:10px; padding:0.5rem 0; font-weight:600; font-size:0.72rem; transition:box-shadow 0.05s ease, transform 0.05s ease; user-select:none; border:none; cursor:pointer; }
     .sci-btn:active { transform:scale(0.95); }
     .sci-btn.sci-trig  { color:var(--accent-glow); }
     .sci-btn.sci-const { background:var(--btn-op-bg); color:var(--accent-glow); }
-    .deck-btn { background:color-mix(in srgb, var(--accent-glow) 12%, var(--screen-bg)); border:1px solid color-mix(in srgb, var(--accent-glow) 28%, transparent); color:var(--accent-glow); border-radius:8px; font-weight:600; cursor:pointer; transition:background 0.15s; }
+    .deck-btn { background:color-mix(in srgb, var(--accent-glow) 12%, var(--screen-bg)); border:1px solid color-mix(in srgb, var(--accent-glow) 28%, transparent); color:var(--accent-glow); border-radius:8px; font-weight:600; cursor:pointer; transition:background 0.1s; }
     .deck-btn:active { background:color-mix(in srgb, var(--accent-glow) 22%, var(--screen-bg)); }
     #screen-mode-badge { font-family:'Press Start 2P',monospace; font-size:7px; font-weight:800; padding:2px 6px; border-radius:4px; background:color-mix(in srgb,var(--accent-glow) 15%,transparent); color:var(--accent-glow); border:1px solid color-mix(in srgb,var(--accent-glow) 35%,transparent); }
     .kin-subpane { display:none; } .kin-subpane.active { display:block; }
     .kin-tab { opacity:0.5; cursor:pointer; background:none; border:none; font-weight:700; font-size:0.7rem; } .kin-tab.active { opacity:1; color:var(--accent-glow); }
     @keyframes softPulse { 0%,100%{transform:scale(1);opacity:.95;} 50%{transform:scale(1.02);opacity:1;} }
     .animate-splash { animation:softPulse 2.5s ease-in-out infinite; }
-    @keyframes panelIn { from{opacity:0;transform:translateY(5px);} to{opacity:1;transform:translateY(0);} }
-    .panel-enter { animation:panelIn 0.2s cubic-bezier(.16,1,.3,1); }
+    @keyframes panelIn { from{opacity:0;transform:translateY(4px);} to{opacity:1;transform:translateY(0);} }
+    .panel-enter { animation:panelIn 0.18s cubic-bezier(.16,1,.3,1) both; }
     .dpad-lbl { position:absolute; font-size:7px; opacity:0.4; pointer-events:none; font-family:'Press Start 2P',monospace; }
+    #screen-expr-buffer { letter-spacing:0.03em; }
+
+    /* ── New: Utility strip ── */
+    .util-strip-btn { background:var(--btn-op-bg); color:var(--btn-op-text); border:none; border-radius:8px; font-weight:700; font-size:0.6rem; cursor:pointer; padding:0.35rem 0; transition:transform 0.05s; font-family:'Press Start 2P',monospace; }
+    .util-strip-btn:active { transform:scale(0.93); }
+    .util-strip-btn.ans-btn { color:var(--accent-glow); }
+
+    /* ── New: History panel ── */
+    #history-panel { position:absolute; top:100%; left:0; right:0; max-height:160px; overflow-y:auto; background:var(--screen-bg); border:1px solid var(--screen-border); border-radius:0 0 10px 10px; z-index:80; font-size:0.65rem; }
+    #history-panel .hist-item { padding:4px 8px; cursor:pointer; border-bottom:1px solid color-mix(in srgb,var(--screen-border) 50%,transparent); font-family:'Courier Prime',monospace; }
+    #history-panel .hist-item:hover { background:color-mix(in srgb,var(--accent-glow) 10%,transparent); }
+    #history-panel .hist-item .hist-result { color:var(--accent-glow); font-weight:700; float:right; }
+
+    /* ── Toast ── */
+    .toast-msg { position:fixed; bottom:20%; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); color:#fff; padding:6px 16px; border-radius:8px; font-size:0.7rem; z-index:99999; pointer-events:none; animation:toastFade 1.8s ease both; }
+    @keyframes toastFade { 0%{opacity:0;transform:translateX(-50%) translateY(8px);} 15%{opacity:1;transform:translateX(-50%) translateY(0);} 80%{opacity:1;} 100%{opacity:0;} }
+
+    /* Error flash */
+    @keyframes errFlash { 0%{border-color:#ef4444;} 100%{border-color:var(--screen-border);} }
+    .err-flash { animation:errFlash 0.6s ease; }
   </style>
 </head>
 <body class="flex items-center justify-center p-4 select-none mode-basic">
 
-  <!-- MASCOT IMAGE SPLASH SCREEN -->
+  <!-- SPLASH SCREEN -->
   <div id="kitsune-splash-screen" class="fixed inset-0 z-[99999] flex items-center justify-center bg-[#0a0b0d] transition-opacity duration-500 ease-in-out">
     <img src="1000174121.png" alt="Loading Suite..." class="h-full w-full object-contain max-w-md animate-splash p-2" onerror="this.style.display='none';">
   </div>
@@ -133,7 +140,7 @@
     </div>
 
     <!-- LCD SCREEN -->
-    <div id="main-screen" class="game-screen-area p-3 mb-4 flex flex-col justify-between min-h-[175px]">
+    <div id="main-screen" class="game-screen-area p-3 mb-4 flex flex-col justify-between min-h-[175px] relative">
       <div class="flex justify-between items-center gap-1">
         <span id="screen-mode-badge">BASIC</span>
         <div id="screen-expr-buffer" class="flex-1 text-[10px] font-mono opacity-60 overflow-x-auto whitespace-nowrap text-center px-1"></div>
@@ -143,13 +150,16 @@
       <div id="screen-primary-readout" class="text-right overflow-x-auto whitespace-nowrap my-2"
            style="font-family:'Press Start 2P',monospace; font-size:clamp(0.9rem,5.5vw,1.6rem); line-height:1.4;">0</div>
       <div id="notebook-canvas-area" class="notebook-render mt-1 pt-1 text-xs overflow-y-auto max-h-40 hidden"></div>
+      <!-- History panel (absolute overlay) -->
+      <div id="history-panel" class="hidden"></div>
     </div>
 
     <!-- WORKSPACE DECK -->
     <div id="hardware-workspace-deck" class="mb-4 hidden">
 
-      <!-- ── CALCULUS ── -->
+      <!-- CALCULUS -->
       <div id="deck-calculus" class="hidden space-y-2 text-xs panel-enter">
+        <div class="text-[8px] opacity-40 text-center mb-0.5">Supports: x^2, sqrt(x), sin(x), π, e, abs(x)…</div>
         <div class="grid grid-cols-2 gap-2">
           <input type="text" id="calc-expr-in" value="x^2 + 3*x" placeholder="f(x)" class="p-2 app-input text-center text-xs">
           <input type="text" id="calc-val-in"  value="2"          placeholder="x₀"   class="p-2 app-input text-center text-xs">
@@ -161,14 +171,13 @@
         </div>
       </div>
 
-      <!-- ── GRAPH ── -->
+      <!-- GRAPH -->
       <div id="deck-graph" class="hidden space-y-2 text-xs panel-enter">
         <div class="flex gap-3 text-[10px] font-bold border-b border-white/10 pb-1">
           <button onclick="switchGraphType('quad')"   id="gtab-quad" class="kin-tab active">Quadratic</button>
           <button onclick="switchGraphType('poly')"   id="gtab-poly" class="kin-tab">Polynomial</button>
           <button onclick="switchGraphType('custom')" id="gtab-custom" class="kin-tab">Custom f(x)</button>
         </div>
-        <!-- Quadratic: ax²+bx+c -->
         <div id="gpane-quad" class="kin-subpane active">
           <div class="grid grid-cols-3 gap-1.5 mb-1">
             <input type="number" id="gr-a" value="1" placeholder="a" oninput="runPlotting()" class="p-1.5 app-input text-center font-mono text-xs">
@@ -177,7 +186,6 @@
           </div>
           <div class="text-[9px] opacity-50 text-center mb-1">ax² + bx + c</div>
         </div>
-        <!-- Polynomial: any power -->
         <div id="gpane-poly" class="kin-subpane">
           <div class="grid grid-cols-5 gap-1 font-mono font-bold text-[9px] mb-1.5">
              <button onclick="addGrText('x')" class="py-1 bg-neutral-800 rounded">x</button>
@@ -189,33 +197,30 @@
           <input type="text" id="gr-poly" value="x^4 - 4*x^2 + 3" oninput="runPlotting()" placeholder="e.g. (x+2)^6 - 3*x" class="w-full p-1.5 app-input font-mono text-center text-xs mb-1">
           <div class="text-[9px] opacity-50 text-center mb-1">Any power — use x^n, (x+a)^n</div>
         </div>
-        <!-- Custom f(x) -->
         <div id="gpane-custom" class="kin-subpane">
           <input type="text" id="gr-fx" value="sin(x)" oninput="runPlotting()" class="w-full p-1.5 app-input font-mono text-center text-xs mb-1">
-          <div class="text-[9px] opacity-50 text-center mb-1">sin, cos, tan, exp, log, sqrt…</div>
+          <div class="text-[9px] opacity-50 text-center mb-1">sin, cos, tan, exp, log, sqrt, π…</div>
         </div>
         <div class="w-full h-28 bg-black/10 rounded border border-white/5 overflow-hidden">
           <canvas id="chartCanvasElement"></canvas>
         </div>
       </div>
 
-      <!-- ── WAVY CURVE ── -->
+      <!-- WAVY CURVE -->
       <div id="deck-wavy" class="hidden space-y-2 text-xs panel-enter">
-        <div class="text-[9px] opacity-50 text-center">Solve rational equation sign behavior</div>
+        <div class="text-[9px] opacity-50 text-center">Solve rational inequality — sign behavior</div>
         <input type="text" id="wv-fx" value="(x-1)^3 * (x+2)^6 / (x-3)" placeholder="e.g. (x-1)*(x+2)^2 / (x-3)" class="w-full p-2 app-input text-center text-xs font-bold">
-        <!-- Sign selector -->
         <div class="flex gap-1 text-[11px] font-bold">
-          <button onclick="setWavySign('>');"  id="wvs-gt" class="flex-1 py-1 bg-black/10 rounded border border-transparent transition-colors">&gt;</button>
-          <button onclick="setWavySign('<');"  id="wvs-lt" class="flex-1 py-1 bg-black/10 rounded border border-transparent transition-colors">&lt;</button>
-          <button onclick="setWavySign('≥');"  id="wvs-ge" class="flex-1 py-1 rounded border transition-colors" style="background:color-mix(in srgb,var(--accent-glow) 15%,transparent);color:var(--accent-glow);border-color:color-mix(in srgb,var(--accent-glow) 35%,transparent)">≥</button>
-          <button onclick="setWavySign('≤');"  id="wvs-le" class="flex-1 py-1 bg-black/10 rounded border border-transparent transition-colors">≤</button>
+          <button onclick="setWavySign('>')"  id="wvs-gt" class="flex-1 py-1 bg-black/10 rounded border border-transparent transition-colors">&gt;</button>
+          <button onclick="setWavySign('<')"  id="wvs-lt" class="flex-1 py-1 bg-black/10 rounded border border-transparent transition-colors">&lt;</button>
+          <button onclick="setWavySign('≥')"  id="wvs-ge" class="flex-1 py-1 rounded border transition-colors" style="background:color-mix(in srgb,var(--accent-glow) 15%,transparent);color:var(--accent-glow);border-color:color-mix(in srgb,var(--accent-glow) 35%,transparent)">≥</button>
+          <button onclick="setWavySign('≤')"  id="wvs-le" class="flex-1 py-1 bg-black/10 rounded border border-transparent transition-colors">≤</button>
         </div>
-        <button onclick="solveWavy();" class="w-full py-2 deck-btn rounded font-bold text-xs">Solve Curve</button>
-        <!-- Number line SVG -->
-        <svg id="wavy-svg" class="w-full" style="height:52px" viewBox="0 0 400 52" preserveAspectRatio="none"></svg>
+        <button onclick="solveWavy()" class="w-full py-2 deck-btn rounded font-bold text-xs">Solve Curve</button>
+        <svg id="wavy-svg" class="w-full" style="height:64px" viewBox="0 0 400 64" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
 
-      <!-- ── VECTORS ── -->
+      <!-- VECTORS -->
       <div id="deck-vectors" class="hidden space-y-1.5 text-xs panel-enter">
         <div class="flex justify-between items-center mb-1">
           <div class="flex gap-2 text-[10px] font-bold">
@@ -224,7 +229,6 @@
           </div>
           <span class="text-[8px] opacity-40">D-pad ▲▼ = 2D/3D toggle</span>
         </div>
-        <!-- Vector inputs -->
         <div class="grid grid-cols-4 gap-1 items-center font-mono">
           <span class="text-[10px] font-bold text-amber-500">A:</span>
           <input type="number" id="v3-ax" value="2"  class="p-1 app-input text-center text-xs">
@@ -243,7 +247,6 @@
           <input type="number" id="v3-cy" value="1" class="p-1 app-input text-center text-xs">
           <input type="number" id="v3-cz" value="2" class="p-1 app-input text-center text-xs">
         </div>
-        <!-- Operations -->
         <div class="grid grid-cols-4 gap-1 text-[10px] font-bold pt-0.5">
           <button onclick="computeVec('add')"   class="py-1 deck-btn rounded">A+B</button>
           <button onclick="computeVec('dot')"   class="py-1 deck-btn rounded">A·B</button>
@@ -253,11 +256,11 @@
         <div class="grid grid-cols-3 gap-1 text-[10px] font-bold">
           <button onclick="computeVec('mag')"   class="py-1 deck-btn rounded">|A|</button>
           <button onclick="computeVec('angle')" class="py-1 deck-btn rounded">∠AB</button>
-          <button onclick="computeVec('unit')"  class="py-1 deck-btn rounded">Â unit</button>
+          <button onclick="computeVec('unit')"  class="py-1 deck-btn rounded">Â</button>
         </div>
       </div>
 
-      <!-- ── KINEMATICS ── -->
+      <!-- KINEMATICS -->
       <div id="deck-kinematics" class="hidden space-y-1.5 text-xs panel-enter">
         <div class="flex gap-3 text-[10px] font-bold border-b border-white/10 pb-1 items-center justify-between">
           <div class="flex gap-3">
@@ -267,8 +270,6 @@
           </div>
           <span class="text-[7px] opacity-30">▲▼ d-pad cycle</span>
         </div>
-
-        <!-- SUVAT pane -->
         <div id="kp-suvat" class="kin-subpane active">
           <div class="text-[8px] opacity-50 mb-1">Fill *any* 3 fields, leave 2 blank to solve!</div>
           <div class="grid grid-cols-5 gap-1 font-mono text-center text-[9px] mb-1">
@@ -279,12 +280,10 @@
             <div><div class="opacity-50 mb-0.5 font-bold text-yellow-500">t (s)</div><input type="number" id="sv-t" class="w-full p-1 app-input text-center"></div>
           </div>
           <div class="flex gap-1">
-            <button onclick="runSuvat()"      class="flex-1 py-1.5 deck-btn rounded font-bold text-[10px]">Solve SUVAT</button>
-            <button onclick="clearSuvat()"    class="py-1.5 px-3 bg-red-900/30 text-red-400 rounded font-bold text-[10px] border border-red-800/30">CLR</button>
+            <button onclick="runSuvat()"   class="flex-1 py-1.5 deck-btn rounded font-bold text-[10px]">Solve SUVAT</button>
+            <button onclick="clearSuvat()" class="py-1.5 px-3 bg-red-900/30 text-red-400 rounded font-bold text-[10px] border border-red-800/30">CLR</button>
           </div>
         </div>
-
-        <!-- Calculus kinematics pane -->
         <div id="kp-calc" class="kin-subpane">
           <div class="text-[8px] opacity-50 mb-1">Enter equation in variable t (e.g., 3*t^2 + 2*t)</div>
           <div class="flex gap-1 mb-1">
@@ -295,10 +294,8 @@
               <option value="a">a(t) given</option>
             </select>
           </div>
-          <button onclick="runKinCalc()" class="w-full py-1.5 deck-btn rounded font-bold text-[10px]">Run Calculus transition</button>
+          <button onclick="runKinCalc()" class="w-full py-1.5 deck-btn rounded font-bold text-[10px]">Run Calculus Transition</button>
         </div>
-
-        <!-- Projectile pane (FIXED: min-w-0 added to prevent horizontal screen breakout) -->
         <div id="kp-proj" class="kin-subpane">
           <div class="text-[8px] opacity-50 mb-1">Initial speed (m/s) + launch angle (°)</div>
           <div class="flex gap-1 mb-1">
@@ -315,23 +312,41 @@
     <!-- SCIENTIFIC DECK -->
     <div id="scientific-deck" class="mb-4 hidden panel-enter">
       <div class="grid grid-cols-4 gap-2 mb-2">
-        <button onclick="runSciOp('sin')"  class="sci-btn sci-trig">sin</button>
-        <button onclick="runSciOp('cos')"  class="sci-btn sci-trig">cos</button>
-        <button onclick="runSciOp('tan')"  class="sci-btn sci-trig">tan</button>
-        <button onclick="runSciOp('sqrt')" class="sci-btn">√x</button>
+        <button onclick="sciInsert('sin')"  class="sci-btn sci-trig">sin</button>
+        <button onclick="sciInsert('cos')"  class="sci-btn sci-trig">cos</button>
+        <button onclick="sciInsert('tan')"  class="sci-btn sci-trig">tan</button>
+        <button onclick="sciInsert('sqrt')" class="sci-btn">√(</button>
       </div>
       <div class="grid grid-cols-4 gap-2 mb-2">
-        <button onclick="runSciOp('asin')"      class="sci-btn sci-trig" style="font-size:0.58rem">sin⁻¹</button>
-        <button onclick="runSciOp('acos')"      class="sci-btn sci-trig" style="font-size:0.58rem">cos⁻¹</button>
-        <button onclick="runSciOp('atan')"      class="sci-btn sci-trig" style="font-size:0.58rem">tan⁻¹</button>
-        <button onclick="runSciOp('factorial')" class="sci-btn">n!</button>
+        <button onclick="sciInsert('asin')"      class="sci-btn sci-trig" style="font-size:0.58rem">sin⁻¹</button>
+        <button onclick="sciInsert('acos')"      class="sci-btn sci-trig" style="font-size:0.58rem">cos⁻¹</button>
+        <button onclick="sciInsert('atan')"      class="sci-btn sci-trig" style="font-size:0.58rem">tan⁻¹</button>
+        <button onclick="sciInsert('factorial')" class="sci-btn">n!</button>
+      </div>
+      <!-- NEW: Power / constant row -->
+      <div class="grid grid-cols-5 gap-2 mb-2">
+        <button onclick="sciInsert('x2')"    class="sci-btn">x²</button>
+        <button onclick="sciInsert('x3')"    class="sci-btn">x³</button>
+        <button onclick="sciInsert('xn')"    class="sci-btn">xⁿ</button>
+        <button onclick="sciInsert('pow10')" class="sci-btn" style="font-size:0.58rem">10ˣ</button>
+        <button onclick="sciInsert('abs')"   class="sci-btn">|x|</button>
       </div>
       <div class="grid grid-cols-4 gap-2">
-        <button onclick="runSciOp('ln')"    class="sci-btn">ln</button>
-        <button onclick="runSciOp('log10')" class="sci-btn" style="font-size:0.58rem">log₁₀</button>
-        <button onclick="runSciOp('pi')"    class="sci-btn sci-const">π</button>
-        <button onclick="runSciOp('e')"     class="sci-btn sci-const">e</button>
+        <button onclick="sciInsert('ln')"    class="sci-btn">ln(</button>
+        <button onclick="sciInsert('log10')" class="sci-btn" style="font-size:0.58rem">log₁₀</button>
+        <button onclick="sciInsert('pi')"    class="sci-btn sci-const">π</button>
+        <button onclick="sciInsert('e')"     class="sci-btn sci-const">e</button>
       </div>
+    </div>
+
+    <!-- UTILITY STRIP (new: parens, ANS, %, history) -->
+    <div id="util-strip" class="grid grid-cols-6 gap-2 mb-2">
+      <button onclick="inputKey('(')"  class="util-strip-btn">(</button>
+      <button onclick="inputKey(')')"  class="util-strip-btn">)</button>
+      <button onclick="insertAns()"    class="util-strip-btn ans-btn">ANS</button>
+      <button onclick="inputKey('%')"  class="util-strip-btn">%</button>
+      <button onclick="toggleDisplayFraction()" class="util-strip-btn" style="color:var(--accent-glow)">a/b</button>
+      <button onclick="toggleHistory()" class="util-strip-btn ans-btn">HIST</button>
     </div>
 
     <!-- BASIC KEYBOARD -->
@@ -339,7 +354,7 @@
       <div class="grid grid-cols-4 gap-3 text-lg">
         <button onclick="inputKey('C')"  class="tactile-btn tactile-btn-op" style="color:#f87171;font-size:0.7rem">C</button>
         <button onclick="inputKey('±')" class="tactile-btn tactile-btn-op" style="font-size:0.7rem">±</button>
-        <button onclick="toggleDisplayFraction()" class="tactile-btn tactile-btn-op" style="font-size:0.55rem;color:var(--accent-glow)">a/b</button>
+        <button onclick="inputKey('EE')" class="tactile-btn tactile-btn-op" style="font-size:0.5rem">EXP</button>
         <button onclick="inputKey('÷')" class="tactile-btn tactile-btn-op op-symbol">÷</button>
 
         <button onclick="inputKey('7')" class="tactile-btn">7</button>
@@ -366,8 +381,6 @@
 
     <!-- CHASSIS BOTTOM -->
     <div class="flex justify-between items-end mt-4">
-
-      <!-- D-Pad -->
       <div class="relative w-16 h-16">
         <div class="absolute top-5 left-0 w-16 h-6 dpad-part rounded-sm"></div>
         <div class="absolute top-0 left-5 w-6 h-16 dpad-part rounded-sm"></div>
@@ -382,12 +395,8 @@
         <div class="absolute top-5 left-5 w-6 h-6 bg-[#1b1c1e] rounded-full opacity-40 pointer-events-none"></div>
         <div class="absolute -bottom-4 w-full text-center dpad-lbl" style="position:absolute;bottom:-14px;left:0;right:0;transform:none;opacity:0.3">MODE</div>
       </div>
-
-      <!-- Branding Watermark -->
       <div class="absolute left-1/2 -translate-x-1/2 bottom-5 text-[10px] font-bold uppercase tracking-[0.4em] pointer-events-none select-none"
            style="font-family:'Press Start 2P',monospace; color:var(--text-hardware); opacity:0.08;">Kitsune</div>
-
-      <!-- SELECT / START -->
       <div class="flex gap-4 text-[9px] font-bold text-center mb-1" style="color:var(--text-hardware);">
         <div class="flex flex-col items-center gap-0.5">
           <button onclick="handleSelectHardwareButton()" class="w-8 h-2 bg-neutral-600 rounded-full transition-transform active:scale-95"></button>
@@ -406,35 +415,95 @@
 
   <script>
   /* ═══════════════════════════════════════════════════════
-     STATE Management
+     STATE
   ═══════════════════════════════════════════════════════ */
-  let appMode          = 'basic';
-  let themeType        = 'dark';
-  let exprBuffer       = '';
-  let primaryReadout   = '0';
+  let appMode            = 'basic';
+  let themeType          = 'dark';
+  let exprBuffer         = '';
+  let primaryReadout     = '0';
   let fractionModeActive = false;
   let fallbackDecimalStr = '0';
-  let lineChartObj     = null;
-  let trigAngleMode    = 'deg';
-  let activeVecDim     = '3d';
-  let activeGraphType  = 'quad';
-  let wavySign         = '≥';
+  let lineChartObj       = null;
+  let trigAngleMode      = 'deg';
+  let activeVecDim       = '3d';
+  let activeGraphType    = 'quad';
+  let wavySign           = '≥';
+  let plotDebounceTimer  = null;
+  let justEvaluated      = false;   // FIX: track post-= state
+  let lastAnswer         = 0;       // FIX: ANS recall
+  let calcHistory        = [];      // FIX: history
+  let errorClearTimer    = null;
 
+  const GRAPH_TYPES = ['quad','poly','custom'];
+  let graphTypeIdx   = 0;
   const KIN_PANES  = ['suvat','calc','proj'];
   let kinPaneIdx   = 0;
 
   /* ═══════════════════════════════════════════════════════
-     HELPERS & KaTeX WRAPPING
+     DOM CACHE
   ═══════════════════════════════════════════════════════ */
-  const toRad = v => trigAngleMode === 'deg' ? v * Math.PI / 180 : v;
-  const toDeg = v => trigAngleMode === 'deg' ? v * 180 / Math.PI : v;
-  const fmtNum = n => String(parseFloat(n.toFixed(10)));
-  const el = id => document.getElementById(id);
+  const $ = id => document.getElementById(id);
+
+  /* ═══════════════════════════════════════════════════════
+     EXPRESSION NORMALIZATION (display → mathjs)
+  ═══════════════════════════════════════════════════════ */
+  function normalizeExpr(str) {
+    if (!str || str.trim() === '') return str;
+    let s = str;
+    // Unicode superscripts → ^ form
+    s = s.replace(/[²³⁴⁵⁶⁷⁸⁹]/g, m => '^' + ' 23456789'['²³⁴⁵⁶⁷⁸⁹'.indexOf(m)]);
+    // Display operators
+    s = s.replace(/×/g, '*');
+    s = s.replace(/÷/g, '/');
+    // √ symbol → sqrt() with proper closing
+    s = s.replace(/√\(/g, 'sqrt(');
+    s = s.replace(/√([^(])/g, 'sqrt($1)');  // FIX: was missing closing paren
+    s = s.replace(/√$/g, 'sqrt(');
+    // ln( → log( for mathjs natural log
+    s = s.replace(/\bln\(/g, 'log(');
+    // log10( stays as-is (mathjs supports it)
+    // abs( stays as-is
+    // Greek / constants
+    s = s.replace(/π/g, 'pi');
+    // Implicit multiplication: 2π → 2*pi, 2x → 2*x, )(  → )*(
+    s = s.replace(/(\d)(pi)/g, '$1*$2');
+    s = s.replace(/(\d)([a-zA-Z])/g, '$1*$2');
+    s = s.replace(/\)\s*\(/g, ')*(');
+    // FIX: e3 → e*3, pi3 → pi*3 (letter-then-digit implicit mul)
+    s = s.replace(/\be(\d)/g, 'e*$1');
+    s = s.replace(/pi(\d)/g, 'pi*$1');
+    // FIX: )digit → )*digit, digit( → digit*(
+    s = s.replace(/\)(\d)/g, ')*$1');
+    s = s.replace(/(\d)\(/g, '$1*(');
+    // Auto-close unclosed parens
+    const opens  = (s.match(/\(/g) || []).length;
+    const closes = (s.match(/\)/g) || []).length;
+    if (opens > closes) s += ')'.repeat(opens - closes);
+    return s;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     HELPERS
+  ═══════════════════════════════════════════════════════ */
+  const fmtNum = n => {
+    if (!isFinite(n) || isNaN(n)) return 'Error';
+    const s = parseFloat(n.toFixed(10));
+    return String(s);
+  };
 
   function printNotebook(tex) {
-    const area = el('notebook-canvas-area');
+    const area = $('notebook-canvas-area');
     area.classList.remove('hidden');
-    katex.render(tex, area, { throwOnError: false, displayMode: true });
+    try { katex.render(tex, area, { throwOnError: false, displayMode: true }); }
+    catch(e) { area.textContent = tex; }
+  }
+
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.className = 'toast-msg';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 2000);
   }
 
   /* ═══════════════════════════════════════════════════════
@@ -454,28 +523,29 @@
     document.body.classList.forEach(c => { if (c.startsWith('mode-')) document.body.classList.remove(c); });
     document.body.classList.add(`mode-${mode}`);
     const meta = MODE_META[mode] || {};
-    el('screen-mode-badge').textContent  = meta.badge || mode.toUpperCase();
-    el('current-mode-lbl').innerText     = meta.label || mode;
-    const hint = el('start-hint');
+    $('screen-mode-badge').textContent  = meta.badge || mode.toUpperCase();
+    $('current-mode-lbl').innerText     = meta.label || mode;
+    const hint = $('start-hint');
     if (hint) hint.textContent = meta.start || '';
-    if (mode !== 'basic') el('main-screen').classList.add('screen-accent-border');
-    else el('main-screen').classList.remove('screen-accent-border');
+    if (mode !== 'basic') $('main-screen').classList.add('screen-accent-border');
+    else $('main-screen').classList.remove('screen-accent-border');
   }
 
-  function toggleMenuDropdown() { el('menu-dropdown').classList.toggle('hidden'); }
+  function toggleMenuDropdown() { $('menu-dropdown').classList.toggle('hidden'); }
   window.addEventListener('click', e => {
-    const drop = el('menu-dropdown'), btn = el('menu-btn');
+    const drop = $('menu-dropdown'), btn = $('menu-btn');
     if (!drop.classList.contains('hidden') && !btn.contains(e.target) && !drop.contains(e.target))
       drop.classList.add('hidden');
   });
 
   function changeMode(mode) {
     appMode = mode;
-    el('menu-dropdown').classList.add('hidden');
-    const deck = el('hardware-workspace-deck'), kb = el('hardware-keyboard-deck'),
-          sci  = el('scientific-deck'), nb = el('notebook-canvas-area');
-    ['calculus','graph','wavy','vectors','kinematics'].forEach(id => el(`deck-${id}`).classList.add('hidden'));
+    $('menu-dropdown').classList.add('hidden');
+    const deck = $('hardware-workspace-deck'), kb = $('hardware-keyboard-deck'),
+          sci  = $('scientific-deck'), nb = $('notebook-canvas-area');
+    ['calculus','graph','wavy','vectors','kinematics'].forEach(id => $(`deck-${id}`).classList.add('hidden'));
     nb.classList.add('hidden');
+
     if (mode === 'basic') {
       deck.classList.add('hidden'); sci.classList.add('hidden'); kb.classList.remove('hidden');
     } else if (mode === 'scientific') {
@@ -483,13 +553,13 @@
     } else {
       deck.classList.remove('hidden'); sci.classList.add('hidden'); kb.classList.add('hidden');
       nb.classList.remove('hidden');
-      const panel = el(`deck-${mode}`);
+      const panel = $(`deck-${mode}`);
       panel.classList.remove('hidden');
       panel.classList.remove('panel-enter'); void panel.offsetWidth; panel.classList.add('panel-enter');
     }
     applyModeStyles(mode);
-    if (mode === 'graph')      setTimeout(runPlotting, 50);
-    if (mode === 'wavy')       { solveWavy(); }
+    if (mode === 'graph')      setTimeout(runPlotting, 80);
+    if (mode === 'wavy')       setTimeout(solveWavy, 50);
     if (mode === 'vectors')    applyVecDim();
     if (mode === 'kinematics') setKinPane('suvat');
   }
@@ -508,6 +578,9 @@
       setKinPane(KIN_PANES[kinPaneIdx]);
     } else if (appMode === 'vectors') {
       setVecDim(activeVecDim === '3d' ? '2d' : '3d');
+    } else if (appMode === 'graph') {
+      graphTypeIdx = (graphTypeIdx + dir + GRAPH_TYPES.length) % GRAPH_TYPES.length;
+      switchGraphType(GRAPH_TYPES[graphTypeIdx]);
     }
   }
 
@@ -515,29 +588,31 @@
     themeType = themeType === 'dark' ? 'light' : 'dark';
     const base = themeType === 'light' ? 'theme-cream ' : '';
     document.body.className = `${base}flex items-center justify-center p-4 select-none mode-${appMode}`;
-    el('theme-icon').innerText = themeType === 'light' ? '🌙' : '☀️';
+    $('theme-icon').innerText = themeType === 'light' ? '🌙' : '☀️';
+    if (appMode === 'graph') setTimeout(runPlotting, 30);
   }
 
   function handleSelectHardwareButton() {
     trigAngleMode = trigAngleMode === 'deg' ? 'rad' : 'deg';
-    el('screen-angle-mode').innerText = trigAngleMode.toUpperCase();
+    $('screen-angle-mode').innerText = trigAngleMode.toUpperCase();
     printNotebook(`\\text{Angle Mode} \\rightarrow \\mathbf{${trigAngleMode.toUpperCase()}}`);
   }
+
   function handleStartHardwareButton() {
-    if (appMode === 'calculus')   evalDerivative();
-    else if (appMode === 'graph') runPlotting();
-    else if (appMode === 'wavy')  solveWavy();
-    else if (appMode === 'vectors')    computeVec('add');
+    if (appMode === 'calculus')     evalDerivative();
+    else if (appMode === 'graph')   runPlotting();
+    else if (appMode === 'wavy')    solveWavy();
+    else if (appMode === 'vectors') computeVec('add');
     else if (appMode === 'kinematics') {
-       if (el('kp-suvat').classList.contains('active')) runSuvat();
-       else if (el('kp-calc').classList.contains('active')) runKinCalc();
+       if ($('kp-suvat').classList.contains('active')) runSuvat();
+       else if ($('kp-calc').classList.contains('active')) runKinCalc();
        else runProjectile();
     }
     else inputKey('=');
   }
 
   /* ═══════════════════════════════════════════════════════
-     BASIC CALCULATOR
+     BASIC + SCIENTIFIC CALCULATOR
   ═══════════════════════════════════════════════════════ */
   function parseToFraction(val) {
     if (isNaN(val) || !isFinite(val)) return null;
@@ -548,7 +623,7 @@
     if (f < 1e-9) return sign + w;
     let bn = 0, bd = 1, minErr = Infinity;
     for (let d = 1; d <= 4000; d++) {
-      const n = Math.round(f * d), err = Math.abs(f - n/d);
+      const n = Math.round(f * d), err = Math.abs(f - n / d);
       if (err < minErr) { minErr = err; bn = n; bd = d; if (err < 1e-10) break; }
     }
     return `${sign}${w * bd + bn}/${bd}`;
@@ -562,173 +637,309 @@
       const m = parseToFraction(n);
       if (m) { primaryReadout = m; fractionModeActive = true; }
     } else { primaryReadout = fallbackDecimalStr; fractionModeActive = false; }
-    el('screen-primary-readout').innerText = primaryReadout;
+    $('screen-primary-readout').innerText = primaryReadout;
   }
-  el('screen-primary-readout').addEventListener('click', toggleDisplayFraction);
 
-  function syncFrac(val) { el('screen-frac-buffer').innerText = parseToFraction(val) || ''; }
+  function syncFrac(val) {
+    const f = parseToFraction(val);
+    $('screen-frac-buffer').innerText = f && !String(val).includes('/') ? f : '';
+  }
 
   function updateDisplay() {
-    el('screen-primary-readout').innerText = primaryReadout;
-    el('screen-expr-buffer').innerText     = exprBuffer;
+    $('screen-primary-readout').innerText = primaryReadout;
+    $('screen-expr-buffer').innerText     = exprBuffer;
+  }
+
+  // FIX: Insert last answer
+  function insertAns() {
+    if (justEvaluated) { exprBuffer = String(lastAnswer); primaryReadout = exprBuffer; justEvaluated = false; }
+    else {
+      const last = exprBuffer.slice(-1);
+      if (last && /[\d)πe]/.test(last)) exprBuffer += '×';
+      exprBuffer += String(lastAnswer);
+      primaryReadout = exprBuffer;
+    }
+    updateDisplay();
+  }
+
+  // FIX: History
+  function addToHistory(expr, result) {
+    calcHistory.unshift({ expr, result });
+    if (calcHistory.length > 20) calcHistory.pop();
+  }
+
+  function toggleHistory() {
+    const panel = $('history-panel');
+    if (!panel.classList.contains('hidden')) { panel.classList.add('hidden'); return; }
+    if (calcHistory.length === 0) { showToast('No history yet'); return; }
+    panel.innerHTML = '';
+    calcHistory.forEach((h, i) => {
+      const div = document.createElement('div');
+      div.className = 'hist-item';
+      div.innerHTML = `<span class="opacity-60">${h.expr}</span><span class="hist-result">= ${h.result}</span>`;
+      div.onclick = () => { exprBuffer = h.result; primaryReadout = h.result; justEvaluated = false; updateDisplay(); panel.classList.add('hidden'); };
+      panel.appendChild(div);
+    });
+    panel.classList.remove('hidden');
   }
 
   function inputKey(k) {
+    // Clear error auto-clear timer
+    if (errorClearTimer) { clearTimeout(errorClearTimer); errorClearTimer = null; }
+
     try {
       if (k === 'C') {
         primaryReadout = '0'; exprBuffer = '';
-        el('screen-frac-buffer').innerText = '';
+        $('screen-frac-buffer').innerText = '';
+        fractionModeActive = false; justEvaluated = false;
       } else if (k === '⌫') {
-        primaryReadout = primaryReadout.length > 1 ? primaryReadout.slice(0,-1) : '0';
-        exprBuffer     = exprBuffer.length > 1     ? exprBuffer.slice(0,-1)     : '';
+        if (justEvaluated) { justEvaluated = false; }
+        if (exprBuffer.length > 0) {
+          const funcMatch = exprBuffer.match(/(sin\(|cos\(|tan\(|asin\(|acos\(|atan\(|sqrt\(|ln\(|log10\(|abs\()$/);
+          if (funcMatch) exprBuffer = exprBuffer.slice(0, -funcMatch[0].length);
+          else exprBuffer = exprBuffer.slice(0, -1);
+          primaryReadout = exprBuffer || '0';
+        } else { primaryReadout = '0'; }
       } else if (k === '=') {
-        const calcStr = exprBuffer.replace(/×/g,'*').replace(/÷/g,'/');
-        const res     = math.evaluate(calcStr || primaryReadout);
-        primaryReadout = fmtNum(res); exprBuffer = primaryReadout;
-        syncFrac(res);
+        const calcStr = normalizeExpr(exprBuffer || primaryReadout);
+        const res = math.evaluate(calcStr);
+        if (Array.isArray(res)) throw new Error('Array result');
+        const resNum = typeof res === 'object' ? res.toNumber() : Number(res);
+        primaryReadout = fmtNum(resNum);
+        addToHistory(exprBuffer, primaryReadout);
+        exprBuffer = primaryReadout;
+        lastAnswer = resNum;
+        syncFrac(resNum);
+        fractionModeActive = false;
+        justEvaluated = true;   // FIX: mark post-eval state
       } else if (k === '±') {
-        primaryReadout = fmtNum(-parseFloat(primaryReadout)); exprBuffer = primaryReadout;
+        if (justEvaluated) {
+          // Negate the result
+          const n = -parseFloat(primaryReadout);
+          primaryReadout = fmtNum(n);
+          exprBuffer = primaryReadout;
+        } else if (exprBuffer === '' || exprBuffer === '0') {
+          exprBuffer = '-';
+          primaryReadout = exprBuffer;
+        } else if (exprBuffer.startsWith('-')) {
+          exprBuffer = exprBuffer.slice(1);
+          primaryReadout = exprBuffer || '0';
+        } else {
+          exprBuffer = '-' + exprBuffer;
+          primaryReadout = exprBuffer;
+        }
+      } else if (k === '%') {
+        // FIX: percentage — convert last number to /100
+        if (justEvaluated) {
+          const n = parseFloat(primaryReadout) / 100;
+          primaryReadout = fmtNum(n);
+          exprBuffer = primaryReadout;
+          justEvaluated = false;
+        } else {
+          exprBuffer += '/100';
+          const res = math.evaluate(normalizeExpr(exprBuffer));
+          const resNum = typeof res === 'object' ? res.toNumber() : Number(res);
+          primaryReadout = fmtNum(resNum);
+          exprBuffer = primaryReadout;
+        }
+      } else if (k === 'EE') {
+        // Scientific notation: append ×10^
+        if (justEvaluated) { justEvaluated = false; }
+        exprBuffer += '×10^';
+        primaryReadout = exprBuffer;
+      } else if (k === '(' || k === ')') {
+        if (justEvaluated && k === '(') { exprBuffer = ''; justEvaluated = false; }
+        else if (justEvaluated) { justEvaluated = false; }
+        exprBuffer += k;
+        primaryReadout = exprBuffer;
       } else {
-        primaryReadout = (primaryReadout === '0' && k !== '.') ? k : primaryReadout + k;
-        exprBuffer     = (exprBuffer     === '0' && k !== '.') ? k : exprBuffer + k;
+        // Regular digit / operator
+        // FIX: If just evaluated and user types a digit, start fresh
+        if (justEvaluated) {
+          if (/[0-9.π]/.test(k)) {
+            exprBuffer = '';
+            primaryReadout = '0';
+          }
+          justEvaluated = false;
+        }
+
+        if (exprBuffer === '0' || exprBuffer === '') {
+          if (k === '.')       { exprBuffer = '0.'; }
+          else if (['+','×','÷'].includes(k)) { exprBuffer = '0' + k; }
+          else if (k === '-')  { exprBuffer = '-'; }
+          else                 { exprBuffer = k; }
+        } else {
+          const lastChar = exprBuffer.slice(-1);
+          if (['+','×','÷'].includes(k) && ['+','×','÷'].includes(lastChar)) {
+            exprBuffer = exprBuffer.slice(0, -1) + k;
+          } else if (k === '-' && ['+','×','÷'].includes(lastChar)) {
+            exprBuffer += k;
+          } else {
+            exprBuffer += k;
+          }
+        }
+        primaryReadout = exprBuffer;
       }
-    } catch { primaryReadout = 'Error'; }
+    } catch(e) {
+      primaryReadout = 'Error';
+      exprBuffer = '';
+      // Flash screen border on error
+      $('main-screen').classList.add('err-flash');
+      setTimeout(() => $('main-screen').classList.remove('err-flash'), 600);
+      // Auto-clear error after 2.5s
+      errorClearTimer = setTimeout(() => {
+        primaryReadout = '0'; exprBuffer = '';
+        fractionModeActive = false; justEvaluated = false;
+        updateDisplay();
+      }, 2500);
+    }
     fractionModeActive = false;
     updateDisplay();
   }
 
   /* ═══════════════════════════════════════════════════════
-     SCIENTIFIC
+     SCIENTIFIC MODE
   ═══════════════════════════════════════════════════════ */
-  function runSciOp(op) {
-    const v = parseFloat(primaryReadout) || 0;
-    let r;
-    try {
-      switch(op) {
-        case 'sin':  r = Math.sin(toRad(v)); break;
-        case 'cos':  r = Math.cos(toRad(v)); break;
-        case 'tan':  r = Math.tan(toRad(v)); break;
-        case 'asin': r = toDeg(Math.asin(v)); break;
-        case 'acos': r = toDeg(Math.acos(v)); break;
-        case 'atan': r = toDeg(Math.atan(v)); break;
-        case 'sqrt': r = Math.sqrt(v); break;
-        case 'ln':   r = Math.log(v); break;
-        case 'log10':r = Math.log10(v); break;
-        case 'factorial': r = math.factorial(Math.round(Math.abs(v))); break;
-        case 'pi':   r = Math.PI; break;
-        case 'e':    r = Math.E; break;
-        default: return;
+  const SCI_DISPLAY = {
+    'sin':'sin(', 'cos':'cos(', 'tan':'tan(',
+    'asin':'asin(', 'acos':'acos(', 'atan':'atan(',
+    'sqrt':'√(', 'ln':'ln(', 'log10':'log10(',
+    'pi':'π', 'e':'e',
+    'factorial':'!',
+    'x2':'²', 'x3':'³', 'xn':'^(',
+    'pow10':'10^(', 'abs':'abs('
+  };
+
+  function sciInsert(op) {
+    fractionModeActive = false;
+    const token = SCI_DISPLAY[op] || op;
+
+    // If just evaluated, handle continuation
+    if (justEvaluated) {
+      if (['pi','e','x2','x3','xn','pow10','abs','sqrt','sin','cos','tan','asin','acos','atan','ln','log10'].includes(op)) {
+        // Functions/constants after result: chain with implicit multiply
+        if (/[\d)πe²³]/.test(exprBuffer.slice(-1))) exprBuffer += '×';
       }
-      if (!isFinite(r) || isNaN(r)) { primaryReadout = 'Error'; }
-      else { primaryReadout = fmtNum(r); syncFrac(r); }
-      exprBuffer = primaryReadout; updateDisplay();
-    } catch { primaryReadout = 'Error'; updateDisplay(); }
+      justEvaluated = false;
+    }
+
+    if (op === 'pi') {
+      const last = exprBuffer.slice(-1);
+      if (last && /[\d)]/.test(last)) exprBuffer += '×';
+      exprBuffer = (exprBuffer === '0' || exprBuffer === '') ? 'π' : exprBuffer + 'π';
+    } else if (op === 'e') {
+      const last = exprBuffer.slice(-1);
+      if (last && /[\d)]/.test(last)) exprBuffer += '×';
+      exprBuffer = (exprBuffer === '0' || exprBuffer === '') ? 'e' : exprBuffer + 'e';
+    } else if (op === 'factorial') {
+      exprBuffer += '!';
+    } else if (op === 'x2' || op === 'x3') {
+      exprBuffer += token;   // append ² or ³
+    } else {
+      const last = exprBuffer.slice(-1);
+      if (last && /[\d)πe²³]/.test(last)) exprBuffer += '×';
+      exprBuffer = (exprBuffer === '0' || exprBuffer === '') ? token : exprBuffer + token;
+    }
+    primaryReadout = exprBuffer;
+    updateDisplay();
   }
 
   /* ═══════════════════════════════════════════════════════
      CALCULUS
   ═══════════════════════════════════════════════════════ */
+  function getCalcExpr() {
+    return normalizeExpr($('calc-expr-in').value.trim());
+  }
+
   function evalDerivative() {
     try {
-      const f = el('calc-expr-in').value;
-      const d = math.derivative(f, 'x').toString();
-      printNotebook(`\\frac{d}{dx}\\left[${f}\\right] = ${d}`);
-    } catch { printNotebook(`\\text{Derivative error — check expression}`); }
+      const raw  = $('calc-expr-in').value.trim();
+      const norm = getCalcExpr();
+      const d    = math.derivative(norm, 'x').toString();
+      printNotebook(`\\frac{d}{dx}\\left[${raw}\\right] = ${d}`);
+    } catch(e) {
+      printNotebook(`\\text{Derivative error — check expression}`);
+    }
   }
 
   function symbolicIntegrate(exprStr, varName = 't') {
     let str = exprStr.replace(/\s+/g, '').replace(/\*\*/g, '^');
-    let terms = [];
-    let current = '';
-    let depth = 0;
+    let terms = [], current = '', depth = 0;
     for (let i = 0; i < str.length; i++) {
-      let char = str[i];
-      if (char === '(') depth++;
-      if (char === ')') depth--;
-      if ((char === '+' || char === '-') && depth === 0 && current !== '') {
-        terms.push(current);
-        current = char;
-      } else {
-        current += char;
-      }
+      const ch = str[i];
+      if (ch === '(') depth++;
+      if (ch === ')') depth--;
+      if ((ch === '+' || ch === '-') && depth === 0 && current !== '') {
+        terms.push(current); current = ch;
+      } else { current += ch; }
     }
     if (current !== '') terms.push(current);
-    
+
     let integratedTerms = terms.map(term => {
       let sign = '';
       if (term.startsWith('-')) { sign = '- '; term = term.slice(1); }
       else if (term.startsWith('+')) { sign = '+ '; term = term.slice(1); }
       else { sign = '+ '; }
-      
+
       if (!term.includes(varName)) {
         if (term === '') return '';
         return `${sign}${term}${varName}`;
       }
-      
+
       const polyRx = new RegExp(`^(?:([0-9.]+)\\*?)?${varName}(?:\\^([+-]?[0-9.]+))?$`);
       let pm = term.match(polyRx);
       if (pm) {
         let coeff = pm[1] === undefined || pm[1] === '' ? 1 : parseFloat(pm[1]);
         let exp   = pm[2] === undefined ? 1 : parseFloat(pm[2]);
         if (exp === -1) { return `${sign}${coeff === 1 ? '' : coeff + '\\cdot'}\\ln|${varName}|`; }
-        let nextExp = exp + 1; let nextCoeff = coeff / nextExp;
-        let cTex = Number.isInteger(nextCoeff) ? String(Math.abs(nextCoeff)) : `\\frac{${coeff}}{${nextExp}}`;
-        let varTex = nextExp === 1 ? varName : `${varName}^{${nextExp}}`;
-        return `${sign}${cTex}${varTex}`;
+        let ne = exp + 1, nc = coeff / ne;
+        let cTex = Number.isInteger(nc) ? String(Math.abs(nc)) : `\\frac{${coeff}}{${ne}}`;
+        let vTex = ne === 1 ? varName : `${varName}^{${ne}}`;
+        return `${sign}${cTex}${vTex}`;
       }
-      
+
       const trigRx = new RegExp(`^(?:([0-9.]+)\\*?)?(sin|cos)\\((?:([0-9.]+)\\*?)?${varName}\\)$`);
       let tm = term.match(trigRx);
       if (tm) {
         let coeff = tm[1] === undefined || tm[1] === '' ? 1 : parseFloat(tm[1]);
-        let type  = tm[2]; let freq  = tm[3] === undefined || tm[3] === '' ? 1 : parseFloat(tm[3]);
-        let outCoeff = coeff / freq;
-        let cTex = Number.isInteger(outCoeff) ? String(Math.abs(outCoeff)) : `\\frac{${coeff}}{${freq}}`;
-        let innerTex = freq === 1 ? varName : `${freq}${varName}`;
-        if (type === 'sin') { let nextSign = sign.trim() === '-' ? '+ ' : '- '; return `${nextSign}${cTex}\\cos(${innerTex})`; }
-        else { return `${sign}${cTex}\\sin(${innerTex})`; }
+        let type  = tm[2], freq = tm[3] === undefined || tm[3] === '' ? 1 : parseFloat(tm[3]);
+        let oc = coeff / freq;
+        let cTex = Number.isInteger(oc) ? String(Math.abs(oc)) : `\\frac{${coeff}}{${freq}}`;
+        let iTex = freq === 1 ? varName : `${freq}${varName}`;
+        if (type === 'sin') { let ns = sign.trim() === '-' ? '+ ' : '- '; return `${ns}${cTex}\\cos(${iTex})`; }
+        else { return `${sign}${cTex}\\sin(${iTex})`; }
       }
       return `${sign}\\int\\!(${term})\\,d${varName}`;
     });
-    
+
     let result = integratedTerms.join(' ').trim();
     if (result.startsWith('+ ')) result = result.slice(2);
     return result;
   }
 
-  function splitTerms(expr) {
-    let terms = [], cur = '', depth = 0;
-    for (const ch of expr.replace(/\s+/g,'')) {
-      if (ch==='(') depth++; if (ch===')') depth--;
-      if ((ch==='+'||ch==='-') && depth===0 && cur) { terms.push(cur); cur=ch; }
-      else cur+=ch;
-    }
-    if (cur) terms.push(cur);
-    return terms;
-  }
-
   function evalIntegral() {
     try {
-      const f = el('calc-expr-in').value.trim();
-      const result = symbolicIntegrate(f, 'x');
-      printNotebook(`\\int\\!\\left(${f}\\right)dx = ${result} + C`);
+      const raw    = $('calc-expr-in').value.trim();
+      const result = symbolicIntegrate(normalizeExpr(raw), 'x');
+      printNotebook(`\\int\\!\\left(${raw}\\right)dx = ${result} + C`);
     } catch { printNotebook(`\\text{Integral parse error}`); }
   }
 
   function evalTangentNormal() {
     try {
-      const f  = el('calc-expr-in').value;
-      const x0 = parseFloat(el('calc-val-in').value) || 0;
-      const node = math.parse(f);
+      const raw  = $('calc-expr-in').value.trim();
+      const norm = normalizeExpr(raw);
+      const x0   = parseFloat($('calc-val-in').value) || 0;
+      const node = math.parse(norm);
       const y0   = node.evaluate({x: x0});
       const mt   = math.derivative(node, 'x').evaluate({x: x0});
       const mnTex = Math.abs(mt) < 1e-9 ? '\\text{undef}' : (-1/mt).toFixed(4);
       printNotebook(
-        `\\text{Point: }(${x0},\\,${y0.toFixed(4)}) \\\\[4pt]
+        `\\text{Point: }(${x0},\\,${Number(y0).toFixed(4)}) \\\\[4pt]
          m_{\\tan}=${mt.toFixed(4)},\\quad m_{\\text{norm}}=${mnTex} \\\\[4pt]
-         y-${y0.toFixed(2)}=${mt.toFixed(4)}(x-${x0})`
+         y-${Number(y0).toFixed(2)}=${mt.toFixed(4)}(x-${x0})`
       );
-    } catch { printNotebook(`\\text{Tangent evaluation error}`); }
+    } catch(e) { printNotebook(`\\text{Tangent evaluation error}`); }
   }
 
   /* ═══════════════════════════════════════════════════════
@@ -736,362 +947,35 @@
   ═══════════════════════════════════════════════════════ */
   function switchGraphType(type) {
     activeGraphType = type;
+    graphTypeIdx    = GRAPH_TYPES.indexOf(type);
     ['quad','poly','custom'].forEach(t => {
-      el(`gpane-${t}`).classList.toggle('active', t === type);
-      el(`gtab-${t}`).classList.toggle('active', t === type);
-      if (t === type) { el(`gtab-${t}`).style.color = 'var(--accent-glow)'; el(`gtab-${t}`).style.opacity = '1'; }
-      else            { el(`gtab-${t}`).style.color = ''; el(`gtab-${t}`).style.opacity = ''; }
+      $(`gpane-${t}`).classList.toggle('active', t === type);
+      const tab = $(`gtab-${t}`);
+      tab.classList.toggle('active', t === type);
+      tab.style.color = t === type ? 'var(--accent-glow)' : '';
+      tab.style.opacity = t === type ? '1' : '';
     });
     runPlotting();
   }
 
-  function addGrText(val) {
-    el('gr-poly').value += val;
-    runPlotting();
-  }
+  function addGrText(val) { $('gr-poly').value += val; runPlotting(); }
 
   function runPlotting() {
+    if (plotDebounceTimer) clearTimeout(plotDebounceTimer);
+    plotDebounceTimer = setTimeout(_doPlot, 60);
+  }
+
+  function _doPlot() {
     const xV = [], yV = [];
     let infoTex = '';
     try {
       if (activeGraphType === 'quad') {
-        const a = parseFloat(el('gr-a').value)||0, b = parseFloat(el('gr-b').value)||0, c = parseFloat(el('gr-c').value)||0;
+        const a = parseFloat($('gr-a').value)||0, b = parseFloat($('gr-b').value)||0, c = parseFloat($('gr-c').value)||0;
         for (let x = -5; x <= 5; x += 0.2) { xV.push(parseFloat(x.toFixed(2))); yV.push(a*x*x+b*x+c); }
         if (Math.abs(a) > 1e-9) {
           const h = -b/(2*a), k = a*h*h+b*h+c;
           const disc = b*b - 4*a*c;
-          const rootsTex = disc >= 0 ? `x=\\frac{${-b.toFixed(2)}\\pm\\sqrt{${disc.toFixed(2)}}}{${(2*a).toFixed(2)}}` : `\\text{No real roots}`;
-          infoTex = `y=${a}x^2 ${b >= 0 ? '+' : ''}${b}x ${c >= 0 ? '+' : ''}${c} \\\\[3pt] \\text{Vertex: }(${h.toFixed(2)},${k.toFixed(2)}) \\\\[3pt] ${rootsTex}`;
-        }
-      } else if (activeGraphType === 'poly') {
-        const f = el('gr-poly').value || 'x';
-        for (let x = -5; x <= 5; x += 0.2) { xV.push(parseFloat(x.toFixed(2))); try { yV.push(math.evaluate(f, {x})); } catch { yV.push(null); } }
-        infoTex = `f(x) = ${f}`;
-      } else {
-        const f = el('gr-fx').value || 'x';
-        for (let x = -5; x <= 5; x += 0.2) { xV.push(parseFloat(x.toFixed(2))); try { yV.push(math.evaluate(f, {x})); } catch { yV.push(null); } }
-        infoTex = `f(x) = ${f}`;
-      }
-    } catch { return; }
-
-    const ctx = el('chartCanvasElement').getContext('2d');
-    if (lineChartObj) lineChartObj.destroy();
-    const grid = themeType === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.07)';
-    lineChartObj = new Chart(ctx, {
-      type: 'line',
-      data: { labels: xV, datasets: [{ data: yV, borderColor: 'var(--accent-glow, #3b82f6)', borderWidth: 2, fill: false, pointRadius: 0, spanGaps: false }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
-        scales: { x: { grid:{color:grid}, ticks:{maxTicksLimit:9,font:{size:8}} }, y: { grid:{color:grid}, ticks:{font:{size:8}} } } }
-    });
-    if (infoTex) printNotebook(infoTex);
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     WAVY CURVE
-  ═══════════════════════════════════════════════════════ */
-  function setWavySign(sign) {
-    wavySign = sign;
-    const map = {'gt':'>','lt':'<','ge':'≥','le':'≤'};
-    Object.entries(map).forEach(([id, s]) => {
-      const btn = el(`wvs-${id}`); if (!btn) return;
-      const active = s === sign;
-      btn.style.background  = active ? 'color-mix(in srgb,var(--accent-glow) 15%,transparent)' : '';
-      btn.style.color       = active ? 'var(--accent-glow)' : '';
-      btn.style.borderColor = active ? 'color-mix(in srgb,var(--accent-glow) 35%,transparent)' : 'transparent';
-    });
-    solveWavy();
-  }
-
-  function parseFactors(exprStr) {
-    const factors = [];
-    let str = exprStr.replace(/\s+/g, '').toLowerCase().replace(/\*\*/g, '^');
-    const linearRegex = /\((?:([0-9.]+)\*?)?x\s*([+-])\s*([0-9.]+)\)(?:\^([0-9.]+))?/g;
-    let match;
-    while ((match = linearRegex.exec(str)) !== null) {
-      const coeff = match[1] ? parseFloat(match[1]) : 1;
-      const sign = match[2]; const constant = parseFloat(match[3]);
-      const power = match[4] ? parseInt(match[4]) : 1;
-      const root = sign === '-' ? constant / coeff : -constant / coeff;
-      factors.push({ root, power, raw: match[0] });
-    }
-    let remaining = str.replace(linearRegex, ' ');
-    const monoRegex = /(?:\(x\)|x)(?:\^([0-9.]+))?/g;
-    while ((match = monoRegex.exec(remaining)) !== null) {
-      const power = match[1] ? parseInt(match[1]) : 1;
-      factors.push({ root: 0, power, raw: match[0] });
-    }
-    return factors;
-  }
-
-  function solveWavy() {
-    const fInput = el('wv-fx').value; if (!fInput) return;
-    let parts = fInput.split('/');
-    let numStr = parts[0] || '1'; let denStr = parts[1] || '1';
-    let numFactors = parseFactors(numStr); let denFactors = parseFactors(denStr);
-    let critMap = new Map();
-    
-    numFactors.forEach(fac => {
-      let rVal = parseFloat(fac.root.toFixed(4));
-      if (!critMap.has(rVal)) critMap.set(rVal, { numPower: 0, denPower: 0 });
-      critMap.get(rVal).numPower += fac.power;
-    });
-    denFactors.forEach(fac => {
-      let rVal = parseFloat(fac.root.toFixed(4));
-      if (!critMap.has(rVal)) critMap.set(rVal, { numPower: 0, denPower: 0 });
-      critMap.get(rVal).denPower += fac.power;
-    });
-    
-    let allCrits = Array.from(critMap.keys()).sort((a,b) => a-b);
-    if (allCrits.length === 0) { printNotebook(`\\text{Factors not recognized. e.g. }(x-1)^3*(x+2)/(x-3)`); return; }
-    
-    let testPoints = []; testPoints.push(allCrits[0] - 1.5);
-    for (let i = 0; i < allCrits.length - 1; i++) { testPoints.push((allCrits[i] + allCrits[i+1]) / 2); }
-    testPoints.push(allCrits[allCrits.length - 1] + 1.5);
-    
-    let evalExpr = (x) => {
-      try { let clean = fInput.replace(/\^/g, '**'); return math.evaluate(clean, { x }); } 
-      catch {
-        let numVal = 1; numFactors.forEach(f => numVal *= Math.pow(x - f.root, f.power));
-        let denVal = 1; denFactors.forEach(f => denVal *= Math.pow(x - f.root, f.power));
-        return numVal / denVal;
-      }
-    };
-    
-    let intervals = [];
-    testPoints.forEach((tp, idx) => {
-      let val = evalExpr(tp);
-      let sign = isNaN(val) || !isFinite(val) ? '?' : (val > 0 ? '+' : (val < 0 ? '-' : '0'));
-      let start = idx === 0 ? -Infinity : allCrits[idx-1];
-      let end = idx === testPoints.length - 1 ? Infinity : allCrits[idx];
-      intervals.push({ start, end, sign });
-    });
-    
-    const wantPos = wavySign === '>' || wavySign === '≥';
-    const includeZero = wavySign === '≥' || wavySign === '≤';
-    let solIntervals = [];
-    
-    intervals.forEach(iv => {
-      const satisfies = wantPos ? iv.sign === '+' : iv.sign === '-';
-      if (satisfies) {
-        let leftB = iv.start === -Infinity ? '(' : '['; let rightB = iv.end === Infinity ? ')' : ']';
-        if (iv.start !== -Infinity) { let info = critMap.get(iv.start); if (!includeZero || info.denPower > 0) leftB = '('; }
-        if (iv.end !== Infinity) { let info = critMap.get(iv.end); if (!includeZero || info.denPower > 0) rightB = ')'; }
-        let startTex = iv.start === -Infinity ? '-\\infty' : iv.start;
-        let endTex = iv.end === Infinity ? '\\infty' : iv.end;
-        solIntervals.push(`${leftB}${startTex},\\, ${endTex}${rightB}`);
-      }
-    });
-    
-    if (includeZero) {
-      allCrits.forEach(c => {
-        let info = critMap.get(c);
-        if (info.denPower === 0 && info.numPower > 0) {
-          let covered = false;
-          intervals.forEach(iv => { const satisfies = wantPos ? iv.sign === '+' : iv.sign === '-'; if (satisfies && (c > iv.start && c < iv.end)) covered = true; });
-          if (!covered) solIntervals.push(`\\{${c}\\}`);
-        }
-      });
-    }
-    
-    let critsListTex = allCrits.map(c => { let info = critMap.get(c); return `${c}${info.denPower > 0 ? '^{p}' : '^{r}'}`; }).join(',\\; ');
-    let solTex = solIntervals.length ? solIntervals.join(' \\cup ') : '\\emptyset';
-    
-    printNotebook(`\\begin{aligned}
-      \\text{Inequality: } & f(x) ${wavySign} 0 \\\\[4pt]
-      \\text{Criticals (r/p): } & \\{ ${critsListTex} \\} \\\\[4pt]
-      \\text{Solution: } & x \\in ${solTex}
-    \\end{aligned}`);
-    drawWavySVG(allCrits, critMap, intervals, includeZero, wantPos);
-  }
-
-  function drawWavySVG(crits, critMap, intervals, inclZero, wantPos) {
-    const svg = el('wavy-svg'); svg.innerHTML = '';
-    const W = 400, H = 52, cy = 26;
-    const mkEl = (tag, attrs) => { const e = document.createElementNS('http://www.w3.org/2000/svg', tag); Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v)); return e; };
-    svg.appendChild(mkEl('line', { x1: 5, y1: cy, x2: W-5, y2: cy, stroke: '#555', 'stroke-width': '1.5' }));
-    
-    if (!crits.length) return;
-    const span = crits[crits.length - 1] - crits[0] || 1;
-    const pad = 50, scaleW = W - 2 * pad;
-    const getX = v => crits.length === 1 ? W/2 : pad + ((v - crits[0]) / span) * scaleW;
-    
-    intervals.forEach((iv, idx) => {
-      const satisfies = wantPos ? iv.sign === '+' : iv.sign === '-';
-      if (satisfies) {
-        const x1 = idx === 0 ? 5 : getX(crits[idx-1]); const x2 = idx === intervals.length - 1 ? W - 5 : getX(crits[idx]);
-        svg.appendChild(mkEl('rect', { x: x1, y: cy - 12, width: Math.max(2, x2 - x1), height: 24, fill: 'color-mix(in srgb, var(--accent-glow, #34d399) 15%, transparent)' }));
-      }
-    });
-    
-    let pts = []; let waveH = 12;
-    let startY = intervals[0].sign === '+' ? cy - waveH : (intervals[0].sign === '-' ? cy + waveH : cy);
-    pts.push({ x: 10, y: startY });
-    crits.forEach((c, idx) => {
-      const cx = getX(c); pts.push({ x: cx, y: cy });
-      const nextSign = intervals[idx+1].sign;
-      const nextY = nextSign === '+' ? cy - waveH : (nextSign === '-' ? cy + waveH : cy);
-      const nextX = idx === crits.length - 1 ? W - 10 : (getX(c) + getX(crits[idx+1])) / 2;
-      pts.push({ x: nextX, y: nextY });
-    });
-    
-    let pathD = `M ${pts[0].x} ${pts[0].y}`;
-    for (let i = 1; i < pts.length; i += 2) {
-      const p1 = pts[i]; const p2 = pts[i+1] || p1;
-      const cp1x = p1.x - (p1.x - pts[i-1].x) * 0.5; const cp1y = pts[i-1].y;
-      pathD += ` C ${cp1x} ${cp1y}, ${p1.x} ${p1.y}, ${p1.x} ${p1.y}`;
-      if (pts[i+1]) { const cp4x = p2.x - (p2.x - p1.x) * 0.5; const cp4y = p2.y; pathD += ` C ${p1.x} ${p1.y}, ${cp4x} ${cp4y}, ${p2.x} ${p2.y}`; }
-    }
-    svg.appendChild(mkEl('path', { d: pathD, fill: 'none', stroke: 'var(--accent-glow, #34d399)', 'stroke-width': '2' }));
-    
-    crits.forEach(c => {
-      const cx = getX(c); const info = critMap.get(c); const isPole = info.denPower > 0;
-      let fill = isPole ? 'var(--screen-bg, #0f1012)' : (inclZero ? 'var(--accent-glow, #34d399)' : 'var(--screen-bg, #0f1012)');
-      let stroke = isPole ? '#fb923c' : 'var(--accent-glow, #34d399)';
-      svg.appendChild(mkEl('circle', { cx: cx, cy: cy, r: 4.5, fill, stroke, 'stroke-width': '2' }));
-      const lbl = mkEl('text', { x: cx, y: cy - 14, 'text-anchor':'middle', 'font-size': '8.5px', 'font-weight':'bold', fill: isPole ? '#fb923c' : 'var(--text-screen, #ffffff)' });
-      lbl.textContent = c; svg.appendChild(lbl);
-    });
-    intervals.forEach((iv, idx) => {
-      const x = idx === 0 ? getX(crits[0]) - 24 : (idx === intervals.length - 1 ? getX(crits[crits.length-1]) + 24 : (getX(crits[idx-1]) + getX(crits[idx])) / 2);
-      const lblY = iv.sign === '+' ? cy - 14 : cy + 16;
-      const tEl = mkEl('text', { x: x, y: lblY, 'text-anchor':'middle', 'font-size': '10px', 'font-weight':'900', fill: iv.sign === '+' ? '#4ade80' : (iv.sign === '-' ? '#f87171' : '#a1a1aa') });
-      tEl.textContent = iv.sign; svg.appendChild(tEl);
-    });
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     VECTORS
-  ═══════════════════════════════════════════════════════ */
-  function setVecDim(d) {
-    activeVecDim = d;
-    el('vdim-2d').style.color   = d==='2d' ? 'var(--accent-glow)' : ''; el('vdim-2d').style.opacity = d==='2d' ? '1' : ''; el('vdim-2d').classList.toggle('active', d==='2d');
-    el('vdim-3d').style.color   = d==='3d' ? 'var(--accent-glow)' : ''; el('vdim-3d').style.opacity = d==='3d' ? '1' : ''; el('vdim-3d').classList.toggle('active', d==='3d');
-    applyVecDim();
-  }
-
-  function applyVecDim() {
-    const show3d = activeVecDim === '3d';
-    document.querySelectorAll('.vec3d').forEach(e => e.style.display = show3d ? '' : 'none');
-    el('vec-crow').style.display = show3d ? '' : 'none';
-  }
-
-  function getVec(p) {
-    return {
-      x: parseFloat(el(`v3-${p}x`).value) || 0,
-      y: parseFloat(el(`v3-${p}y`).value) || 0,
-      z: activeVecDim === '3d' ? (parseFloat(el(`v3-${p}z`).value) || 0) : 0
-    };
-  }
-
-  function computeVec(op) {
-    const a = getVec('a'), b = getVec('b'), c = getVec('c');
-    const magA = Math.sqrt(a.x**2+a.y**2+a.z**2); const magB = Math.sqrt(b.x**2+b.y**2+b.z**2);
-    if (op === 'add') { printNotebook(`\\vec{A}+\\vec{B}=(${a.x+b.x})\\hat{i}+(${a.y+b.y})\\hat{j}+(${a.z+b.z})\\hat{k}`); } 
-    else if (op === 'dot') { const dp = a.x*b.x+a.y*b.y+a.z*b.z; const angle = (magA>0&&magB>0) ? toDeg(Math.acos(Math.min(1,Math.max(-1,dp/(magA*magB))))).toFixed(2) : '?'; printNotebook(`\\vec{A}\\cdot\\vec{B}=${dp} \\\\[4pt] \\theta=${angle}^\\circ`); } 
-    else if (op === 'cross') { const rx=a.y*b.z-a.z*b.y, ry=a.z*b.x-a.x*b.z, rz=a.x*b.y-a.y*b.x; printNotebook(`\\vec{A}\\times\\vec{B}=(${rx})\\hat{i}+(${ry})\\hat{j}+(${rz})\\hat{k}`); } 
-    else if (op === 'stp') { const t = a.x*(b.y*c.z-b.z*c.y)-a.y*(b.x*c.z-b.z*c.x)+a.z*(b.x*c.y-b.y*c.x); printNotebook(`[\\vec{A}\\;\\vec{B}\\;\\vec{C}]=${t}`); } 
-    else if (op === 'mag') { printNotebook(`|\\vec{A}|=${magA.toFixed(4)},\\quad|\\vec{B}|=${magB.toFixed(4)}`); } 
-    else if (op === 'angle') { const dp = a.x*b.x+a.y*b.y+a.z*b.z; const theta = (magA>0&&magB>0) ? toDeg(Math.acos(Math.min(1,Math.max(-1,dp/(magA*magB))))).toFixed(3) : '?'; printNotebook(`\\theta=\\cos^{-1}\\!\\left(\\frac{\\vec{A}\\cdot\\vec{B}}{|A||B|}\\right)=${theta}^\\circ`); } 
-    else if (op === 'unit') { const ux=(a.x/magA).toFixed(3), uy=(a.y/magA).toFixed(3), uz=(a.z/magA).toFixed(3); printNotebook(`\\hat{A}=\\frac{\\vec{A}}{|A|}=(${ux})\\hat{i}+(${uy})\\hat{j}+(${uz})\\hat{k}`); }
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     KINEMATICS
-  ═══════════════════════════════════════════════════════ */
-  function setKinPane(p) {
-    kinPaneIdx = KIN_PANES.indexOf(p);
-    KIN_PANES.forEach(id => {
-      el(`kp-${id}`).classList.toggle('active', id===p);
-      const btn = el(`ksb-${id}`); btn.classList.toggle('active', id===p);
-      btn.style.color   = id===p ? 'var(--accent-glow)' : ''; btn.style.opacity = id===p ? '1' : '';
-    });
-  }
-
-  function clearSuvat() { ['sv-u','sv-v','sv-a','sv-s','sv-t'].forEach(id => { el(id).value = ''; }); el('notebook-canvas-area').classList.add('hidden'); }
-
-  function runSuvat() {
-    const get = id => { const v = el(id).value.trim(); return v === '' ? null : parseFloat(v); };
-    let s = get('sv-s'), u = get('sv-u'), v = get('sv-v'), a = get('sv-a'), t = get('sv-t');
-    let count = 0; if (s !== null) count++; if (u !== null) count++; if (v !== null) count++; if (a !== null) count++; if (t !== null) count++;
-    if (count < 3) { printNotebook(`\\text{SUVAT Solver needs exactly 3 values.}`); return; }
-    let solutions = [];
-    
-    if (u !== null && v !== null && a !== null) {
-      if (Math.abs(a) < 1e-9) { if (Math.abs(u - v) < 1e-9) solutions.push({ s: 0, u, v, a, t: 0 }); else { printNotebook(`\\text{Error: } u \\neq v \\text{ when } a = 0`); return; } } 
-      else { solutions.push({ s: (v*v - u*u)/(2*a), u, v, a, t: (v - u)/a }); }
-    }
-    else if (u !== null && v !== null && s !== null) {
-      if (Math.abs(u + v) < 1e-9) { if (Math.abs(s) < 1e-9) solutions.push({ s, u, v, a: 0, t: 0 }); else { printNotebook(`\\text{Error: } s \\neq 0 \\text{ when } u + v = 0`); return; } } 
-      else { let tSol = (2 * s) / (u + v); solutions.push({ s, u, v, a: tSol !== 0 ? (v - u)/tSol : 0, t: tSol }); }
-    }
-    else if (u !== null && v !== null && t !== null) { solutions.push({ s: 0.5*(u+v)*t, u, v, a: Math.abs(t) > 1e-9 ? (v-u)/t : 0, t }); }
-    else if (u !== null && a !== null && s !== null) {
-      let vSq = u*u + 2*a*s; if (vSq < 0) { printNotebook(`\\text{No real solutions: } v^2 < 0`); return; }
-      let rootV = Math.sqrt(vSq); const possibleVs = rootV === 0 ? [0] : [rootV, -rootV];
-      possibleVs.forEach(solV => { if (Math.abs(a) > 1e-9) { solutions.push({ s, u, v: solV, a, t: (solV - u)/a }); } else if (Math.abs(u) > 1e-9) { solutions.push({ s, u, v: solV, a, t: s/u }); } });
-    }
-    else if (u !== null && a !== null && t !== null) { solutions.push({ s: u*t + 0.5*a*t*t, u, v: u + a*t, a, t }); }
-    else if (u !== null && s !== null && t !== null) { if (Math.abs(t) < 1e-9) { printNotebook(`\\text{Invalid Input: } t = 0`); return; } solutions.push({ s, u, v: (2*s/t) - u, a: (2*(s - u*t))/(t*t), t }); }
-    else if (v !== null && a !== null && s !== null) {
-      let uSq = v*v - 2*a*s; if (uSq < 0) { printNotebook(`\\text{No real solutions: } u^2 < 0`); return; }
-      let rootU = Math.sqrt(uSq); const possibleUs = rootU === 0 ? [0] : [rootU, -rootU];
-      possibleUs.forEach(solU => { if (Math.abs(a) > 1e-9) { solutions.push({ s, u: solU, v, a, t: (v - solU)/a }); } else if (Math.abs(v) > 1e-9) { solutions.push({ s, u: solU, v, a, t: s/v }); } });
-    }
-    else if (v !== null && a !== null && t !== null) { solutions.push({ s: v*t - 0.5*a*t*t, u: v - a*t, v, a, t }); }
-    else if (v !== null && s !== null && t !== null) { if (Math.abs(t) < 1e-9) { printNotebook(`\\text{Invalid Input: } t = 0`); return; } solutions.push({ s, u: (2*s/t) - v, v, a: (2*(v*t - s))/(t*t), t }); }
-    else if (a !== null && s !== null && t !== null) { if (Math.abs(t) < 1e-9) { printNotebook(`\\text{Invalid Input: } t = 0`); return; } solutions.push({ s, u: (s - 0.5*a*t*t)/t, v: (s + 0.5*a*t*t)/t, a, t }); }
-    
-    if (solutions.length === 0) { printNotebook(`\\text{No real physical solutions match input configuration.}`); return; }
-    
-    let primary = solutions.find(sol => sol.t >= 0) || solutions[0];
-    const writeF = (id, val) => { el(id).value = parseFloat(val.toFixed(4)); };
-    writeF('sv-s', primary.s); writeF('sv-u', primary.u); writeF('sv-v', primary.v);
-    writeF('sv-a', primary.a); writeF('sv-t', primary.t);
-    
-    let tex = `\\text{SUVAT Solved Successfully!} \\\\[4pt]`;
-    solutions.forEach((sol, idx) => {
-      if (solutions.length > 1) tex += `\\mathbf{\\text{Configuration } ${idx+1}:} \\\\`;
-      tex += `\\begin{aligned} s &= ${sol.s.toFixed(3)}\\text{ m} & u &= ${sol.u.toFixed(3)}\\text{ m/s} \\\\ v &= ${sol.v.toFixed(3)}\\text{ m/s} & a &= ${sol.a.toFixed(3)}\\text{ m/s}^2 \\\\ t &= ${sol.t.toFixed(3)}\\text{ s} \\end{aligned}`;
-      if (idx < solutions.length - 1) tex += `\\\\ \\hline \\\\`;
-    });
-    printNotebook(tex);
-  }
-
-  function runKinCalc() {
-    try {
-      const f    = el('kcl-expr').value.trim(); const type = el('kcl-type').value;
-      if (type === 's') {
-        const vExpr = math.derivative(f, 't').toString(); const aExpr = math.derivative(vExpr, 't').toString();
-        printNotebook(`\\begin{aligned} s(t) &= ${f} \\\\[4pt] v(t) &= \\frac{ds}{dt} = ${vExpr} \\\\[4pt] a(t) &= \\frac{dv}{dt} = ${aExpr} \\end{aligned}`);
-      } else if (type === 'v') {
-        const aExpr = math.derivative(f, 't').toString(); const sTex  = symbolicIntegrate(f, 't');
-        printNotebook(`\\begin{aligned} v(t) &= ${f} \\\\[4pt] a(t) &= \\frac{dv}{dt} = ${aExpr} \\\\[4pt] s(t) &= \\int\\! v\\,dt = ${sTex} + C \\end{aligned}`);
-      } else {
-        const vTex  = symbolicIntegrate(f, 't'); let cleanV = vTex.replace(/\\frac\{([0-9.]+)\}\{([0-9.]+)\}/g, '($1/$2)'); const sTex  = symbolicIntegrate(cleanV, 't');
-        printNotebook(`\\begin{aligned} a(t) &= ${f} \\\\[4pt] v(t) &= \\int\\! a\\,dt = ${vTex} + C_1 \\\\[4pt] s(t) &= \\int\\! v\\,dt = ${sTex} + C_1 t + C_2 \\end{aligned}`);
-      }
-    } catch { printNotebook(`\\text{Calculus parsing error in variable t}`); }
-  }
-
-  function runProjectile() {
-    const u  = parseFloat(el('kpj-u').value)  || 0; const th = parseFloat(el('kpj-th').value) || 0; const h0 = parseFloat(el('kpj-h0').value) || 0;
-    const g  = 9.81; const rad = th * Math.PI / 180; const ux = u * Math.cos(rad), uy = u * Math.sin(rad);
-    const disc = uy*uy + 2*g*h0; const T = disc >= 0 ? (uy + Math.sqrt(disc)) / g : (2*uy/g);
-    const R = ux * T; const H = h0 + (uy*uy)/(2*g);
-    printNotebook(`u=${u}\\text{ ms}^{-1},\\;\\theta=${th}^\\circ,\\;h_0=${h0}\\text{ m} \\\\[4pt] R=${R.toFixed(2)}\\text{ m},\\quad H_{\\max}=${H.toFixed(2)}\\text{ m},\\quad T=${T.toFixed(2)}\\text{ s}`);
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     BOOT SEQUENCE
-  ═══════════════════════════════════════════════════════ */
-  window.onload = function() {
-    changeMode('basic');
-    setTimeout(() => {
-      const s = el('kitsune-splash-screen'); if (s) { s.style.opacity = '0'; setTimeout(() => s.remove(), 500); }
-    }, 2000);
-  };
-  </script>
-</body>
-</html>
-
-
+          const rootsTex = disc >= 0
+            ? `x=\\frac{${-b}\\pm\\sqrt{${disc}}}{${2*a}}`
+            : `\\text{No real roots}`;
+          infoTex = `y=${a}x^2${b>=0?'+':''}${b}x${c>=0?'+':''}${c} \\\\[3pt] \\text{Vertex: }(${h.toFixed
